@@ -39,6 +39,9 @@
       // 跳转到菜单导航对应路由
       gotoRouteHandle (url) {
         var routeName = getRouteNameByUrl(url)
+        console.log(routeName);
+        
+
         if (/\S/.test(routeName)) {
           this.$router.push({ name: routeName })
         }

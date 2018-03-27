@@ -20,7 +20,7 @@
 import krtHeader from "../layout/krt-header";
 import krtSidebar from "../layout/krt-sidebar";
 import krtFooter from "../layout/krt-footer";
-import contentTabs from '../layout/content-tabs';
+import krtTabs from '../layout/krt-tabs'; 
 
 import { mapMutations } from "vuex";
 
@@ -34,7 +34,7 @@ export default {
     krtHeader,
     krtSidebar,
     krtFooter,
-    contentTabs
+    krtTabs
   },
   computed: {
     //添加class
@@ -68,7 +68,8 @@ export default {
        this.$API.user.getUserInfo().then(({ data  }) => {
             console.log(data );
             if (data && data.code === 0) {
-               this.SET_CURRENTUSER({ currentUser: data.user })
+               this.SET_CURRENTUSER({ currentUser: data.user });
+               //this.DELETE_CONTENT_TABS([]);
             } else {
               this.$message.error(data.msg);
             }
@@ -96,7 +97,7 @@ html {
   position: relative;
   padding-top: 60px;
   margin-left: 200px;
-  overflow-y: auto;
+  overflow: hidden;
   background-color: #f2f2f2;
 }
 </style>

@@ -5,7 +5,7 @@
             background-color="#545c64"
             text-color="#fff"
             active-text-color="#ffd04b">
-            <el-menu-item index="1-1" @click="$router.push({ name: 'home' })">
+            <el-menu-item index="1-1" @click="$router.push({ name: 'dashBoard' })">
                 <i class="site-sidebar__menu-icon fa fa-home"></i>
                 <span slot="title">首页</span>
             </el-menu-item>
@@ -38,7 +38,8 @@ export default {
     created () {
       this.getMenuNavList().then(() => {
         this.routeHandle(this.$route)
-      })
+      });
+      //this.$router.replace({ name: "dashBoard" });
     },
     computed: {
         //添加class
@@ -66,8 +67,9 @@ export default {
           console.log(route.name);
           var tab = this.$store.state.contentTabs.filter(item => item.name === route.name)[0]
           console.log('tab',tab);
+          console.log(route.name=='dashBoard');
           // tab不存在, 先添加
-          if (isEmpty(tab)) {
+          if (isEmpty(tab) && route.name!='dashBoard') {
             var menuNav = this.getMenuNavByRouteName(route.name, this.$store.state.menuNavList)
             if (!isEmpty(menuNav)) {
               tab = {
@@ -82,7 +84,18 @@ export default {
             } else {
               return console.error('未能找到可用tab标签页！')
             }
+          }else if(isEmpty(tab) && route.name=='dashBoard'){
+              tab = {
+                id: '0',
+                name: 'dashBoard',
+                title: '首页',
+                //type: (window.SITE_CONFIG.nestIframeRouteNameList || []).indexOf(route.name) !== -1 ? 'iframe' : 'module',
+                tyle:'module',
+                url: "/n/dashBoard"
+              }
+              this.ADD_CONTENT_TAB(tab) 
           }
+          console.log('tab',tab);
           this.menuNavActive = tab.id + ''
           this.UPDATE_CONTENT_TABS_ACTIVE_NAME({ name: route.name })
         }
