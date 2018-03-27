@@ -1,0 +1,50 @@
+html,body{
+  margin: 0px;
+  height:100%;
+  font-size:14px;
+  font-family: Microsoft YaHei;
+}  
+#app{
+  height:100%;
+  overflow: hidden;
+}
+.krt-search {
+    background-color: #fff;
+    border: 1px solid #d2d6de;
+    margin-bottom: 5px;
+    padding: 15px;
+}
+.krt-search-form > .el-form-item {
+  margin-bottom: 0px;
+}
+.krt-box{
+    position: relative;
+    border: 1px solid #d2d6de;
+    background: #ffffff;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.krt-box-body{
+    background-color: #ffffff;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+    padding: 10px;
+}
+.krt-do-button{
+  padding:5px 0px 5px 0px
+}
+.krt-page{
+  margin-top: 10px;
+}
+.el-pagination{
+  text-align: center;
+}
+.el-table td, .el-table th{
+  padding: 8px 0px;
+}
+
+.krt-wrapper{
+  padding: 15px;
+}
