@@ -34,6 +34,7 @@ const navs = {
     mutations: {
         ADD_TAG: (state, action) => {
             state.tag = action;
+            console.log('==========',action)
             setStore({ name: 'tag', content: state.tag })
             if (state.tagList.some(a => a.value === action.value)) return
             state.tagList.push({

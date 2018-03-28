@@ -63,6 +63,14 @@ export function getUUID () {
 }
 
 /**
+ * 设置浏览器头部标题
+ */
+export const setTitle = function (title) {
+  title = title ? `${title}`+'--Krt-admin' : 'Krt-admin';
+  window.document.title = title;
+};
+
+/**
  * 总体路由处理器
  */
 export const resolveUrlPath = (url, name) => {
@@ -73,12 +81,11 @@ export const resolveUrlPath = (url, name) => {
   } else {
       reqUrl = `${reqUrl}`;
   }
-  console.log(reqUrl);
   return reqUrl;
 }
 /**
- * 总体路由设置器
- */
+* 总体路由设置器
+*/
 export const setUrlPath = ($route) => {
   let value = "";
   if ($route.query.src) {

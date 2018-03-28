@@ -15,6 +15,8 @@
 </template>
 <script>
 import { mapMutations } from "vuex";
+import { mapGetters } from "vuex";
+import { setToken} from '@/utils/auth'
 export default {
   data() {
     return {
@@ -30,6 +32,9 @@ export default {
       }
     };
   },
+    computed: {
+    ...mapGetters(["tagWel"])
+  },
   methods: {
     //提交表单
     submitForm(formName) {
@@ -42,11 +47,10 @@ export default {
           this.$API.common.login(params).then(({ data  }) => {
             console.log(data );
             if (data && data.code === 0) {
-              //保存token
-              this.$cookie.set("token", data.token, {
-                expires: `${data.expire || 0}s`
-              });
-              this.$router.push({ name: "home" });
+              //保存登录token
+              setToken(data.token);
+             // this.$store.commit("ADD_TAG", this.tagWel);
+              this.$router.push({ path: this.tagWel.value });
             } else {
               this.$message.error(data.msg);
             }

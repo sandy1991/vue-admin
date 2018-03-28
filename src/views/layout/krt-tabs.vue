@@ -4,7 +4,7 @@
     <div class="tags-box" ref="tagBox">
       <div class="tags-list" ref="tagsList" @mousewheel="hadelMousewheel" @mouseup="hadelMouseUp" @mousemove="hadelMouse" @mousedown="hadelMousestart" @touchup="hadelMouseUp" @touchmove="hadelMouse" @touchstart="hadelMousestart">
         <div ref="tagsPageOpened" class="tag-item" :name="item.value" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item)">
-          <span class="icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span>
+          <span class="iconfont icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span>
           <span class="tag-text">{{item.label}}</span>
           <i class="el-icon-close tag-close" @click.stop="closeTag(item)" v-if="item.close"></i>
         </div>
@@ -28,7 +28,8 @@
   </div>
 </template>
 <script>
-  // import { resolveUrlPath, setUrlPath } from "@/util/util";
+
+   import { resolveUrlPath, setUrlPath } from "@/utils";
   import {
     mapState,
     mapGetters
@@ -235,12 +236,6 @@
     height: 40px;
     background: #ffffff;
   }
-  .tag-collapse {
-    font-size: 36px !important;
-  }
-  .tag-collapse.tag-collapse_right {
-    transform: rotate(90deg);
-  }
   .tags-list {
     position: absolute;
     padding: 2px 10px;
@@ -252,9 +247,9 @@
     color: #eee;
     font-size: 11px !important;
   }
-  .tag-item-icon.is-active {
-    color: 3ccc;
-  }
+  .is-active {
+    color: #4e97d9;
+}
   .tag-item {
     position: relative;
     display: inline-block;
