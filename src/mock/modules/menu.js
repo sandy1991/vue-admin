@@ -9,121 +9,114 @@ export function nav () {
     data: {
       'msg': 'success',
       'menuList': [{
-        'menuId': 1,
-        'parentId': 0,
-        'parentName': null,
-        'name': '系统管理',
-        'url': null,
-        'perms': null,
-        'type': 0,
-        'icon': 'fa fa-cog',
-        'orderNum': 0,
-        'open': null,
-        'list': [{
-          'menuId': 2,
-          'parentId': 1,
-          'parentName': null,
-          'name': '管理员列表',
-          'url': 'modules/sys/user.html',
-          'perms': null,
-          'type': 1,
-          'icon': 'fa fa-user',
-          'orderNum': 1,
-          'open': null,
-          'list': null
-        }, 
-        {
-          'menuId': 3,
-          'parentId': 1,
-          'parentName': null,
-          'name': '角色管理',
-          'url': 'modules/sys/role.html',
-          'perms': null,
-          'type': 1,
-          'icon': 'fa fa-user-secret',
-          'orderNum': 2,
-          'open': null,
-          'list': null
+        id: 14,
+        label: "数据展示",
+        href: '/exhibition/index',
+        icon: 'icon-shujuzhanshi2',
+        meta: {
+          roles: ['admin'],
         },
-        {
-          'menuId': 4,
-          'parentId': 1,
-          'parentName': null,
-          'name': '菜单管理',
-          'url': 'modules/sys/menu.html',
-          'perms': null,
-          'type': 1,
-          'icon': 'fa fa-th-list',
-          'orderNum': 3,
-          'open': null,
-          'list': null
-        },
-        {
-          'menuId': 5,
-          'parentId': 1,
-          'parentName': null,
-          'name': 'SQL监控',
-          'url': 'druid/sql.html',
-          'perms': null,
-          'type': 1,
-          'icon': 'fa fa-bug',
-          'orderNum': 4,
-          'open': null,
-          'list': null
-        },
-        {
-          'menuId': 6,
-          'parentId': 1,
-          'parentName': null,
-          'name': '定时任务',
-          'url': 'modules/job/schedule.html',
-          'perms': null,
-          'type': 1,
-          'icon': 'fa fa-tasks',
-          'orderNum': 5,
-          'open': null,
-          'list': null
-        },
-        {
-          'menuId': 27,
-          'parentId': 1,
-          'parentName': null,
-          'name': '参数管理',
-          'url': 'modules/sys/config.html',
-          'perms': 'sys:config:list,sys:config:info,sys:config:save,sys:config:update,sys:config:delete',
-          'type': 1,
-          'icon': 'fa fa-sun-o',
-          'orderNum': 6,
-          'open': null,
-          'list': null
-        },
-        {
-          'menuId': 30,
-          'parentId': 1,
-          'parentName': null,
-          'name': '文件上传',
-          'url': 'modules/oss/oss.html',
-          'perms': 'sys:oss:all',
-          'type': 1,
-          'icon': 'fa fa-file-image-o',
-          'orderNum': 6,
-          'open': null,
-          'list': null
-        },
-        {
-          'menuId': 29,
-          'parentId': 1,
-          'parentName': null,
-          'name': '系统日志',
-          'url': 'modules/sys/log.html',
-          'perms': 'sys:log:list',
-          'type': 1,
-          'icon': 'fa fa-file-text-o',
-          'orderNum': 7,
-          'open': null,
-          'list': null
+        children: [],
+      }, {
+        id: 2,
+        label: "第三方网站",
+        href: '',
+        icon: 'icon-iframe',
+        meta: {},
+        children: [{
+          id: 3,
+          label: "百度",
+          href: 'https://www.baidu.com',
+          icon: 'icon-baidu1',
+          children: [],
+        }, {
+          id: 4,
+          label: "搜狐",
+          href: 'http://www.shouhu.com',
+          icon: 'icon-souhu',
+          children: [],
+        }, {
+          id: 5,
+          label: "360",
+          href: 'http://www.360.com',
+          icon: 'icon-msnui-360',
+          children: [],
+      
         }]
-      }],
+      }, {
+        id: 6,
+        label: "表格CRUD",
+        href: '/table/index',
+        icon: 'icon-biaoge',
+        meta: {},
+        children: []
+      }, {
+        id: 9,
+        label: "表单CRUD",
+        href: '/form/index',
+        query: {
+          a: 1
+        },
+        icon: 'icon-biaodan',
+        meta: {},
+        children: []
+      }, {
+        id: 7,
+        label: "阿里图标",
+        href: '/iconfont/index',
+        icon: 'icon-changyonglogo27',
+        meta: {},
+        children: []
+      }, {
+        id: 9,
+        label: "系统管理",
+        icon: 'icon-liuliangyunpingtaitubiao08',
+        meta: {},
+        children: [
+          {
+            id: 10,
+            label: "用户管理",
+            href: '/admin/user',
+            icon: 'icon-yonghuguanli',
+            children: []
+          }, {
+            id: 11,
+            label: "角色管理",
+            href: '/admin/role',
+            icon: 'icon-jiaoseguanli',
+            children: []
+          },
+          {
+            id: 12,
+            label: "菜单管理",
+            href: '/admin/menu',
+            icon: 'icon-caidanguanli',
+            children: []
+          }
+        ]
+      }, {
+        id: 8,
+        label: "综合错误",
+        href: '#',
+        icon: 'icon-cuowu',
+        meta: {},
+        children: [
+          {
+            id: 14,
+            label: "错误日志",
+            href: '/errlog/index',
+            icon: 'icon-rizhi',
+            children: []
+          }, {
+            id: 15,
+            label: "错误页面",
+            href: '/errlog/page',
+            icon: 'icon-cuowutishitubiao',
+            children: []
+          }
+        ]
+      }
+      ],
       'code': 0,
       'permissions': ['sys:schedule:info', 'sys:menu:update', 'sys:menu:delete', 'sys:config:info', 'sys:menu:list', 'sys:config:save', 'sys:config:update', 'sys:schedule:resume', 'sys:user:delete', 'sys:config:list', 'sys:user:update', 'sys:role:list', 'sys:menu:info', 'sys:menu:select', 'sys:schedule:update', 'sys:schedule:save', 'sys:role:select', 'sys:user:list', 'sys:menu:save', 'sys:role:save', 'sys:schedule:log', 'sys:role:info', 'sys:schedule:delete', 'sys:role:update', 'sys:schedule:list', 'sys:user:info', 'sys:schedule:run', 'sys:config:delete', 'sys:role:delete', 'sys:user:save', 'sys:schedule:pause', 'sys:log:list', 'sys:oss:all']
     }

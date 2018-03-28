@@ -1,3 +1,4 @@
+import { baseUrl } from '@/config/env'
 /**
  * 是否有权限
  * @param {*} key
@@ -59,4 +60,38 @@ export function getUUID () {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     return (c === 'x' ? (Math.random() * 16 | 0) : ('r&0x3' | '0x8')).toString(16)
   })
+}
+
+/**
+ * 总体路由处理器
+ */
+export const resolveUrlPath = (url, name) => {
+
+  let reqUrl = url;
+  if (url.indexOf("http") != -1 || url.indexOf("https") != -1) {
+      reqUrl = `/myiframe/urlPath?src=${reqUrl}&name=${name}`;
+  } else {
+      reqUrl = `${reqUrl}`;
+  }
+  console.log(reqUrl);
+  return reqUrl;
+}
+/**
+ * 总体路由设置器
+ */
+export const setUrlPath = ($route) => {
+  let value = "";
+  if ($route.query.src) {
+      value = $route.query.src;
+      if (value.indexOf(baseUrl) != -1) {
+          const port = value
+              .substr(value.lastIndexOf(":"))
+              .replace(value.substr(value.lastIndexOf("/")), "");
+          const path = value.replace(baseUrl + port, "");
+          value = "#" + path + port;
+      }
+  } else {
+      value = $route.path;
+  }
+  return value;
 }

@@ -5,6 +5,7 @@
         <!-- 左侧菜单start -->
        <krt-sidebar></krt-sidebar>
        <!-- 内容区 -->  
+       <krt-tabs></krt-tabs>
        <div class="main" :style="mainStyle">
             <transition name="fade" mode="out-in">
                 <router-view></router-view>
@@ -43,7 +44,7 @@ export default {
     },
     //计算main-div高度
     mainStyle() {
-      return [{ height: this.$store.state.documentClientHeight - 110 + "px" }];
+      return [{ height: this.$store.state.documentClientHeight - 150 + "px" }];
     }
   },
   created () {
@@ -95,9 +96,8 @@ html {
 }
 .main {
   position: relative;
-  padding-top: 60px;
   margin-left: 200px;
-  overflow: hidden;
+  overflow-y: auto;
   background-color: #f2f2f2;
 }
 </style>

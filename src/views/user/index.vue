@@ -90,12 +90,12 @@
    </div>
   </div>
   <!-- 弹窗, 新增 / 修改 -->
-  <add-or-update v-if="addOrUpdateVisible" ref="addOrUpdate"  @refreshDataList="getDataList"></add-or-update>
+  <iu v-if="addOrUpdateVisible" ref="iu"  @refreshDataList="getDataList"></iu>
 </div>
 </template>
 
 <script>
-import addOrUpdate from "./addOrUpdate";
+import iu from "./iu";
 export default {
   name: 'user',
   data() {
@@ -114,7 +114,7 @@ export default {
     };
   },
   components: {
-    addOrUpdate
+    iu
   },
   activated() {
     this.getDataList();

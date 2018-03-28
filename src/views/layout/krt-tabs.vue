@@ -1,103 +1,321 @@
 <template>
-  <div class="site-content site-content-tabs">
-    <el-tabs
-      v-model="tabActiveName"
-      type="border-card"
-      :closable="$store.state.contentTabs.length > 1"
-      @tab-click="selectedTabHandle"
-      @tab-remove="removeTabHandle">
-        <el-tab-pane
-          v-for="item in $store.state.contentTabs"
-          :key="item.name"
-          :label="item.title"
-          :name="item.name">
-          <div :style="contentViewHeight(item)">
-          <!-- <el-card :body-style="contentViewHeight(item)"> -->
-            <iframe
-              v-if="item.type === 'iframe'"
-              :src="getNestIframeUrl(item.url)"
-              width="100%" height="100%" frameborder="0" scrolling="yes">
-            </iframe>
-            <keep-alive v-else>
-              <router-view v-if="item.name === tabActiveName"></router-view>
-            </keep-alive>
-          <!-- </el-card> -->
-          </div>
-        </el-tab-pane>
-    </el-tabs>
+  <div class="tags-container">
+    <!-- tag盒子 -->
+    <div class="tags-box" ref="tagBox">
+      <div class="tags-list" ref="tagsList" @mousewheel="hadelMousewheel" @mouseup="hadelMouseUp" @mousemove="hadelMouse" @mousedown="hadelMousestart" @touchup="hadelMouseUp" @touchmove="hadelMouse" @touchstart="hadelMousestart">
+        <div ref="tagsPageOpened" class="tag-item" :name="item.value" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item)">
+          <span class="icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span>
+          <span class="tag-text">{{item.label}}</span>
+          <i class="el-icon-close tag-close" @click.stop="closeTag(item)" v-if="item.close"></i>
+        </div>
+      </div>
+      <el-dropdown class="tags-menu pull-right">
+        <el-button type="primary" size="mini">
+          更多
+          <i class="el-icon-arrow-down el-icon--right"></i>
+        </el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item @click.native="closeOthersTags">关闭其他</el-dropdown-item>
+          <el-dropdown-item @click.native="closeAllTags">关闭全部</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </div>
+    <!-- <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
+            <li @click="closeTag(selectedTag)">关闭</li>
+            <li @click="closeOthersTags">关闭其他</li>
+            <li @click="closeAllTags">关闭全部</li>
+          </ul> -->
   </div>
 </template>
-
 <script>
-  import isEmpty from 'lodash/isEmpty'
-  import { mapMutations } from 'vuex'
+  // import { resolveUrlPath, setUrlPath } from "@/util/util";
+  import {
+    mapState,
+    mapGetters
+  } from "vuex";
   export default {
-    data () {
+    name: "tags",
+    components: {
+    },
+    data() {
       return {
+        visible: false,
+        tagBodyLeft: 0,
+        lock: false,
+        startX: 0,
+        startY: 0,
+        endX: 0,
+        endY: 0,
+        top: 0,
+        left: 0,
+        selectedTag: {}
+      };
+    },
+    created() {},
+    mounted() {
+      this.init();
+    },
+    watch: {
+      $route(to) {
+        this.init();
+      },
+      visible(value) {
+        if (value) {
+          document.body.addEventListener("click", this.closeMenu);
+        } else {
+          document.body.removeEventListener("click", this.closeMenu);
+        }
+      },
+      tagBodyLeft(value) {
+        this.$refs.tagsList.style.left = value + "px";
       }
     },
     computed: {
-      tabActiveName: {
-        get () {
-          return this.$store.state.contentTabsActiveName
-        },
-        set (val) {
-          this.UPDATE_CONTENT_TABS_ACTIVE_NAME({ name: val })
-        }
+      ...mapGetters(["tagWel", "tagList", "tag"]),
+      nowTagValue: function() {
+        return setUrlPath(this.$route);
+      },
+      tagListNum: function() {
+        return this.tagList.length != 0;
       }
     },
     methods: {
-      // tab内容容器显示高度
-      contentViewHeight (tab) {
-        var height = this.$store.state.documentClientHeight
-        height -= 60 // krt-header
-        height -= 40 // el-tabs__header
-        height -= 40 // krt-footer
-        height += 'px'
-        return tab.type === 'iframe' ? { height } : { height: height }
+      init() {
+        this.refsTag = this.$refs.tagsPageOpened;
+        setTimeout(() => {
+          this.refsTag.forEach((item, index) => {
+            if (this.tag.value === item.attributes.name.value) {
+              let tag = this.refsTag[index];
+              this.moveToView(tag);
+            }
+          });
+        }, 1);
       },
-      // 获取iframe嵌套地址
-      getNestIframeUrl (url) {
-        return window.SITE_CONFIG.nestIframeUrl + url
+      showCollapse() {
+        this.$store.commit("SET_COLLAPSE");
       },
-      // 选中tab
-      selectedTabHandle (tab) {
-        tab = this.$store.state.contentTabs.filter(item => item.name === tab.name)
-        if (!isEmpty(tab)) {
-          this.$router.push({ name: tab[0].name })
+      hadelMouseUp(e) {
+        this.lock = false;
+      },
+      hadelMousestart(e) {
+        this.lock = true;
+        if (e.clientX && e.clientY) {
+          this.startX = e.clientX;
+          this.startY = e.clientY;
+        } else {
+          this.startX = e.changedTouches[0].pageX;
+          this.startY = e.changedTouches[0].pageY;
         }
       },
-      // 删除tab
-      removeTabHandle (tabName) {
-        var newTabs = this.$store.state.contentTabs.filter(item => item.name !== tabName)
-        // 当前选中tab被删除
-        if (tabName === this.tabActiveName) {
-          this.$router.push({ name: newTabs[newTabs.length - 1].name }, () => {
-            this.tabActiveName = this.$route.name
-          })
+      hadelMouse(e) {
+        const boundarystart = 0,
+          boundaryend =
+          this.$refs.tagsList.offsetWidth - this.$refs.tagBox.offsetWidth + 100;
+        if (!this.lock) {
+          return;
         }
-        this.UPDATE_CONTENT_TABS(newTabs)
+        //鼠标滑动
+        if (e.clientX && e.clientY) {
+          this.endX = e.clientX;
+          this.endY = e.clientY;
+          //触摸屏滑动
+        } else {
+          //获取滑动屏幕时的X,Y
+          this.endX = e.changedTouches[0].pageX;
+          this.endY = e.changedTouches[0].pageY;
+        }
+        //获取滑动距离
+        let distanceX = this.endX - this.startX;
+        let distanceY = this.endY - this.startY;
+        //判断滑动方向——向右滑动
+        distanceX = parseInt(distanceX * 0.8);
+        if (distanceX > 0 && this.tagBodyLeft < boundarystart) {
+          this.tagBodyLeft = this.tagBodyLeft + distanceX;
+          //判断滑动方向——向左滑动
+        } else if (distanceX < 0 && this.tagBodyLeft >= -boundaryend) {
+          this.tagBodyLeft = this.tagBodyLeft + distanceX;
+        }
       },
-      ...mapMutations(['UPDATE_CONTENT_TABS', 'UPDATE_CONTENT_TABS_ACTIVE_NAME'])
+      hadelMousewheel(e) {
+        const step = 0.8 * 90; //一个tag长度
+        const boundarystart = 0,
+          boundaryend =
+          this.$refs.tagsList.offsetWidth - this.$refs.tagBox.offsetWidth + 100;
+        // Y>0向左滑动
+        if (e.deltaY > 0 && this.tagBodyLeft >= -boundaryend) {
+          this.tagBodyLeft = this.tagBodyLeft - step;
+          // Y<0向右滑动
+        } else if (e.deltaY < 0 && this.tagBodyLeft < boundarystart) {
+          this.tagBodyLeft = this.tagBodyLeft + step;
+        }
+      },
+      openMenu(tag, e) {
+        if (this.tagList.length == 1) {
+          return;
+        }
+        this.visible = true;
+        this.selectedTag = tag;
+        this.left = e.clientX;
+        this.top = e.clientY;
+      },
+      closeOthersTags() {
+        this.$store.commit("DEL_TAG_OTHER");
+      },
+      closeMenu() {
+        this.visible = false;
+      },
+      closeAllTags() {
+        this.$store.commit("DEL_ALL_TAG");
+        this.$router.push({
+          path: resolveUrlPath(this.tagWel.value),
+          query: this.tagWel.query
+        });
+      },
+      moveToView(tag) {
+        if (tag.offsetLeft < -this.tagBodyLeft) {
+          // 标签在可视区域左侧
+          this.tagBodyLeft = -tag.offsetLeft + 10;
+        } else if (
+          tag.offsetLeft + 10 > -this.tagBodyLeft &&
+          tag.offsetLeft + tag.offsetWidth <
+          -this.tagBodyLeft + this.$refs.tagBox.offsetWidth
+        ) {
+          // 标签在可视区域
+        } else {
+          // 标签在可视区域右侧
+          this.tagBodyLeft = -(
+            tag.offsetLeft -
+            (this.$refs.tagBox.offsetWidth - 100 - tag.offsetWidth) + 20
+          );
+        }
+      },
+      openUrl(item) {
+        this.$router.push({
+          path: resolveUrlPath(item.value, item.label),
+          query: item.query
+        });
+      },
+      eachTag(tag) {
+        for (var key in this.tagList) {
+          if (this.tagList[key].value == tag.value) {
+            return key;
+          }
+        }
+        return -1;
+      },
+      closeTag(item) {
+        const key = this.eachTag(item);
+        let tag;
+        this.$store.commit("DEL_TAG", item);
+        if (item.value == this.tag.value) {
+          tag = this.tagList[key == 0 ? key : key - 1];
+          this.openUrl(tag);
+        }
+      }
     }
-  }
+  };
 </script>
-<style >
-
-.site-content-tabs{
-  position: relative;
-  height: 40px;
-  background: #ffffff;
-  line-height: 40px;
-  border-bottom: 1px solid #d2d6de;
-}
-.site-content-tabs .el-tabs--border-card{
-  border: 0;
-  -webkit-box-shadow:none;
-  box-shadow:none;
-}
-.site-content-tabs .el-tabs__content{
-  padding: 0px;
-  overflow-y: auto;
-}
+<style scoped>
+  .tags-container {
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding-top: 60px;
+    margin-left: 200px;
+    border-bottom: 1px solid #d2d6de;
+  }
+  .sidebar-collapse .tags-container {
+    margin-left: 64px;
+  }
+  .tags-box {
+    position: relative;
+    box-sizing: border-box;
+    padding-right: 106px;
+    width: 100%;
+    height: 40px;
+    background: #ffffff;
+  }
+  .tag-collapse {
+    font-size: 36px !important;
+  }
+  .tag-collapse.tag-collapse_right {
+    transform: rotate(90deg);
+  }
+  .tags-list {
+    position: absolute;
+    padding: 2px 10px;
+    overflow: visible;
+    white-space: nowrap;
+    transition: left .3s ease;
+  }
+  .tag-item-icon {
+    color: #eee;
+    font-size: 11px !important;
+  }
+  .tag-item-icon.is-active {
+    color: 3ccc;
+  }
+  .tag-item {
+    position: relative;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    margin: 2px 4px 2px 0;
+    padding: 0 10px;
+    border: 1px solid #e9eaec;
+    border-radius: 3px;
+    background: #fff;
+    color: #495060!important;
+    font-size: 12px;
+    vertical-align: middle;
+    opacity: 1;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .tag-text {
+    margin-left: 8px;
+  }
+  .tag-close {
+    margin-left: 8px;
+  }
+  .tag-item:hover {
+    opacity: .85;
+  }
+  .tags-menu {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 15px;
+    height: 96%;
+    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: -3px 0 15px 3px rgba(0, 0, 0, 0.1);
+  }
+  .contextmenu {
+    margin: 0;
+    background: #fff;
+    z-index: 2;
+    position: fixed;
+    list-style-type: none;
+    padding: 5px 0;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
+  }
+  .contextmenu>li {
+    margin: 0;
+    height: 32px;
+    line-height: 32px;
+    padding: 0 15px;
+    cursor: pointer;
+  }
+  .contextmenu>li:hover {
+    background: #eee;
+  }
 </style>
+
+
