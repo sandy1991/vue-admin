@@ -1,6 +1,6 @@
 <template>
   <div class="tags-container">
-    <!-- tag -->
+    <!-- tag盒子 -->
     <div class="tags-box" ref="tagBox">
       <div class="tags-list" ref="tagsList" @mousewheel="hadelMousewheel" @mouseup="hadelMouseUp" @mousemove="hadelMouse" @mousedown="hadelMousestart" @touchup="hadelMouseUp" @touchmove="hadelMouse" @touchstart="hadelMousestart">
         <div ref="tagsPageOpened" class="tag-item" :name="item.value" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item)">
@@ -20,6 +20,11 @@
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+    <!-- <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
+            <li @click="closeTag(selectedTag)">关闭</li>
+            <li @click="closeOthersTags">关闭其他</li>
+            <li @click="closeAllTags">关闭全部</li>
+          </ul> -->
   </div>
 </template>
 <script>
@@ -217,7 +222,11 @@
     box-sizing: border-box;
     overflow: hidden;
     padding-top: 60px;
+    margin-left: 200px;
     border-bottom: 1px solid #d2d6de;
+  }
+  .sidebar-collapse .tags-container {
+    margin-left: 64px;
   }
   .tags-box {
     position: relative;
@@ -238,6 +247,9 @@
     color: #eee;
     font-size: 11px !important;
   }
+  
+  
+  
   .is-active {
     color: #4e97d9;
 }
@@ -277,7 +289,7 @@
     height: 96%;
     box-sizing: border-box;
     background-color: #fff;
-    box-shadow: -3px 0 15px 3px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 0 3px 3px rgba(0, 0, 0, 0.1);
   }
   .contextmenu {
     margin: 0;

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router';
 import Layout from '@/views/home/index'
-import Myiframe from '@/components/iframe/iframe.vue'
+import iframe from '@/components/iframe/iframe.vue'
 
 import login from '@/views/login/index.vue'
 import errorPage404 from '@/components/errorPage/404.vue';
@@ -36,13 +36,13 @@ export const asyncRouterMap = [
         import ('@/views/wel/index')
     }]
   }, {
-    path: '/myiframe',
+    path: '/iframe',
     component: Layout,
-    redirect: '/myiframe',
+    redirect: '/iframe',
     children: [{
       path: ":routerPath",
       name: 'iframe',
-      component: Myiframe,
+      component: iframe,
       props: true
     }]
   }, {
@@ -53,6 +53,12 @@ export const asyncRouterMap = [
       name: '用户管理',
       component: () =>
         import ('@/views/user/index')
-    }]
+    },{
+      path: 'menu',
+      name: '菜单管理',
+      component: () =>
+        import ('@/views/menu/index')
+    }
+    ]
   }
 ]

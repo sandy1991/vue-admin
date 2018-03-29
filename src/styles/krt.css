@@ -1,9 +1,56 @@
 html,body{
   margin: 0px;
   height:100%;
+  color: #606266;
   font-size:14px;
-  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Microsoft YaHei";
-}  
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+}
+
+/********************* 重置样式*********************************/
+html,body,ul,li,ol,dl,dd,dt,p,h1,h2,h3,h4,h5,h6,form,fieldset,legend,img {
+  margin: 0;
+  padding: 0
+}
+fieldset,img {
+  border: 0
+}
+img {
+  display: block
+}
+address,caption,cite,code,dfn,th,var {
+  font-style: normal;
+  font-weight: normal
+}
+ul,ol {
+  list-style: none
+}
+input {
+  padding-top: 0;
+  padding-bottom: 0;
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+}
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0
+}
+select,input {
+  vertical-align: middle
+}
+select,input,textarea {
+  font-size: 12px;
+  margin: 0
+}
+input[type="text"],input[type="password"],textarea {
+  outline-style: none;
+  -webkit-appearance: none
+}
+textarea {
+  resize: none
+}
+table {
+  border-collapse: collapse
+}
+/************************************************************/
 #app{
   height:100%;
   overflow: hidden;
@@ -45,6 +92,15 @@ html,body{
     margin-bottom: 20px;
     width: 100%;
 }
+.krt-box-header{
+    border-bottom: 1px solid #e7eaec;
+    padding: 15px 15px 15px;
+}
+.krt-box-header >.box-tools {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+}
 .krt-box-body{
     background-color: #ffffff;
     border-top-left-radius: 0;
@@ -53,7 +109,7 @@ html,body{
     border-bottom-left-radius: 3px;
     padding: 10px;
 }
-.krt-do-button{
+.krt-box-button{
   padding:5px 0px 5px 0px
 }
 .krt-page{

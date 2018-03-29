@@ -16,10 +16,10 @@
 
   <div class="krt-box">
   <div class="krt-box-body">  
-    <div class="krt-do-button">
-        <el-button  type="primary" size="small" @click="addOrUpdateHandle()">新增</el-button>
+    <div class="krt-box-button"> 
+        <el-button  type="primary" size="small" @click="insertOrUpdateHandle()">新增</el-button>
         <el-button  type="danger" size="small" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
-        <el-button  type="primary" size="small" v-if="hasPermission('sys:user:excel')"  @click="addOrUpdateHandle()">导出excel</el-button>
+        <el-button  type="primary" size="small" v-if="hasPermission('sys:user:excel')"  @click="insertOrUpdateHandle()">导出excel</el-button>
     </div>
     <el-table
       :data="dataList"
@@ -72,7 +72,7 @@
         label="操作"
         width="100">
         <template slot-scope="scope">
-           <el-button  type="text" size="small" @click="addOrUpdateHandle(scope.row.id)">修改</el-button>
+           <el-button  type="text" size="small" @click="insertOrUpdateHandle(scope.row.id)">修改</el-button>
           <el-button type="text" size="small" @click="deleteHandle(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
@@ -91,12 +91,12 @@
    </div>
   </div>
   <!-- 弹窗, 新增 / 修改 -->
-  <iu v-if="addOrUpdateVisible" ref="iu"  @refreshDataList="getDataList"></iu>
+  <insert-or-update v-if="insertOrUpdateVisible" ref="insertOrUpdate"  @refreshDataList="getDataList"></insert-or-update>
 </div>
 </template>
 
 <script>
-import iu from "./iu";
+import insertOrUpdate from "./insert-or-update";
 export default {
   name: 'user',
   data() {
@@ -111,11 +111,11 @@ export default {
       totalPage: 0,
       dataListLoading: false,
       dataListSelections: [],
-      addOrUpdateVisible: false
+      insertOrUpdateVisible: false
     };
   },
   components: {
-    iu
+    insertOrUpdate
   },
   activated() {
     this.getDataList();
@@ -132,7 +132,7 @@ export default {
         limit: this.pageSize,
         param1: this.dataForm.param1
       };
-      this.$API.user.list(params).then(({ data }) => {
+      this.API.user.list(params).then(({ data }) => {
         if (data && data.code === 0) {
           console.log(data);
           this.dataList = data.page.list;
@@ -160,10 +160,10 @@ export default {
       this.dataListSelections = val;
     },
     // 新增 / 修改
-    addOrUpdateHandle(id) {
-      this.addOrUpdateVisible = true;
+    insertOrUpdateHandle(id) {
+      this.insertOrUpdateVisible = true;
       this.$nextTick(() => {
-        this.$refs.addOrUpdate.init(id);
+        this.$refs.insertOrUpdate.init(id);
       });
     },
     // 删除

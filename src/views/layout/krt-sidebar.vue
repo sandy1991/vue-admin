@@ -34,7 +34,7 @@ export default {
   methods: {
     // 获取菜单导航列表 / 权限
     getMenu() {
-      return this.$API.menu.nav().then(({ data }) => {
+      return this.API.menu.nav().then(({ data }) => {
         if (data && data.code === 0) {
           this.$store.commit("SET_MENU", data.menuList);
           this.$store.commit(

@@ -19,7 +19,7 @@ export function nav () {
         children: [],
       }, {
         id: 2,
-        label: "第三方网站",
+        label: "iframe",
         href: '',
         icon: 'icon-iframe',
         meta: {},
@@ -83,6 +83,33 @@ export function nav () {
             id: 12,
             label: "菜单管理",
             href: '/admin/menu',
+            icon: 'icon-caidanguanli',
+            children: []
+          }
+        ]
+      },{
+        id: 9,
+        label: "错误页",
+        icon: 'icon-liuliangyunpingtaitubiao08',
+        meta: {},
+        children: [
+          {
+            id: 10,
+            label: "403",
+            href: '/403',
+            icon: 'icon-yonghuguanli',
+            children: []
+          }, {
+            id: 11,
+            label: "404",
+            href: '/404',
+            icon: 'icon-jiaoseguanli',
+            children: []
+          },
+          {
+            id: 12,
+            label: "500",
+            href: '/500',
             icon: 'icon-caidanguanli',
             children: []
           }

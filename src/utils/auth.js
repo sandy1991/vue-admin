@@ -10,6 +10,6 @@ export function setToken(token) {
   return Cookies.set(TokenKey, token)
 }
 
-export function deleteToken() {
-  return Cookies.delete(TokenKey)
+export function removeToken() {
+  return Cookies.remove(TokenKey)
 }

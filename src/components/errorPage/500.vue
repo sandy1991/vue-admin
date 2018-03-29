@@ -5,7 +5,7 @@
         <div class="error500-body-con-title">
           5<span class="error500-0-span"><i class="icon-debug"></i></span><span class="error500-0-span"><i class="icon-debug"></i></span>
         </div>
-        <p class="error500-body-con-message">Oops! the server is wrong</p>
+        <p class="error500-body-con-message">抱歉! 服务发生异常!</p>
         <div class="error500-btn-con">
           <el-button @click="goHome" size="large" style="width: 200px;" type="text">返回首页</el-button>
           <el-button @click="backPage" size="large" style="width: 200px;margin-left: 40px;" type="primary">返回上一页</el-button>

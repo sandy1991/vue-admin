@@ -57,7 +57,7 @@ export function getStringLength (s) {
  * 设置浏览器头部标题
  */
 export const setTitle = function (title) {
-  title = title ? `${title}`+'--Krt-admin' : 'Krt-admin';
+  title = title ? `${title}`+'--krt-admin 通用后台管理系统' : 'krt-admin 通用后台管理系统';
   window.document.title = title;
 };
 
@@ -67,7 +67,7 @@ export const setTitle = function (title) {
 export const resolveUrlPath = (url, name) => {
   let reqUrl = url;
   if (url.indexOf("http") != -1 || url.indexOf("https") != -1) {
-      reqUrl = `/myiframe/urlPath?src=${reqUrl}&name=${name}`;
+      reqUrl = `/iframe/urlPath?src=${reqUrl}&name=${name}`;
   } else {
       reqUrl = `${reqUrl}`;
   }
@@ -92,4 +92,51 @@ export const setUrlPath = ($route) => {
       value = $route.path;
   }
   return value;
+}
+
+/**
+ * 浏览器判断是否全屏
+ */
+export const fullscreenToggel = () => {
+  if (fullscreenEnable()) {
+      exitFullScreen();
+  } else {
+      reqFullScreen();
+  }
+}
+
+/**
+* 浏览器判断是否全屏
+*/
+export const fullscreenEnable = () => {
+  var isFullscreen = document.fullscreenEnabled ||
+      window.fullScreen ||
+      document.mozFullscreenEnabled ||
+      document.webkitIsFullScreen;
+  return isFullscreen;
+}
+
+/**
+* 浏览器全屏
+*/
+export const reqFullScreen = () => {
+  if (document.documentElement.requestFullScreen) {
+      document.documentElement.requestFullScreen();
+  } else if (document.documentElement.webkitRequestFullScreen) {
+      document.documentElement.webkitRequestFullScreen();
+  } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+  }
+}
+/**
+* 浏览器退出全屏
+*/
+export const exitFullScreen = () => {
+  if (document.documentElement.requestFullScreen) {
+      document.exitFullScreen();
+  } else if (document.documentElement.webkitRequestFullScreen) {
+      document.webkitCancelFullScreen();
+  } else if (document.documentElement.mozRequestFullScreen) {
+      document.mozCancelFullScreen();
+  }
 }

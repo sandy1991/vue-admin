@@ -1,5 +1,5 @@
 <template>
-	<div class="login-container pull-height" @keyup.enter.native="login">
+	<div class="login-container pull-height">
     <div class="login-info text-white animated fadeInLeft">
       <h1>krt-admin 通用后台管理系统</h1>
       <ul>
@@ -11,23 +11,27 @@
       <div class="login-main animated fadeIn">
         <h2>登录 krt-admin</h2>
         <p>欢迎使用本系统</p>
-         <el-form class="loginForm" status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0">
+         <el-form class="loginForm" :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0">
           <el-form-item prop="username">
-            <el-input  v-model="loginForm.username" auto-complete="off" placeholder="请输入用户名"></el-input>
+            <el-input  v-model="loginForm.username" auto-complete="off" placeholder="请输入用户名">
+              <i class="iconfont icon-username" slot="prefix"></i>
+            </el-input>
           </el-form-item>
           <el-form-item prop="password">
             <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="请输入密码">
-              <i class="el-icon-view el-input__icon" slot="prefix"></i>
+              <i class="iconfont icon-password" slot="prefix"></i>
             </el-input>
           </el-form-item>
           <el-form-item prop="code">
             <el-row :span="24">
               <el-col :span="14">
-                <el-input v-model="loginForm.code" auto-complete="off" placeholder="请输入验证码"></el-input>
+                <el-input v-model="loginForm.code" auto-complete="off" placeholder="请输入验证码">
+                  <i class="iconfont icon-yanzhengma" slot="prefix"></i>
+                </el-input>
               </el-col>
               <el-col :span="10">
                 <div class="login-code">
-                  <img class="login-code-img" :src="captchaPath" @click="getCaptcha"/>
+                  <img class="login-code-img" :src="captchaPath" @click="getCaptcha" alt="验证码">
                 </div>
               </el-col>
             </el-row>
@@ -54,7 +58,6 @@ export default {
         usernaem: "",
         password: "",
         code: "",
-        captchaPath: ""
       },
       loginRules: {
         username: [
@@ -64,10 +67,11 @@ export default {
           { required: true, trigger: "blur", message: "密码不能为空" }
         ],
         code: [
-          { min: 4, max: 4, message: "验证码长度为4位", trigger: "blur" },
+          { min: 5, max: 5, message: "验证码长度为5位", trigger: "blur" },
           { required: true, trigger: "blur", message: "验证码不能为空" }
         ]
-      }
+      },
+      captchaPath: ""
     };
   },
   created() {
@@ -79,7 +83,9 @@ export default {
   methods: {
     // 获取验证码
     getCaptcha() {
-      this.captchaPath = this.$API.common.captcha();
+      console.log('xxx');
+      this.captchaPath = this.API.common.captcha();
+      console.log(this.captchaPath);
     },
     //提交表单
     login() {
@@ -89,7 +95,7 @@ export default {
             username: this.loginForm.username,
             password: this.loginForm.password
           };
-          this.$API.common.login(params).then(({ data }) => {
+          this.API.common.login(params).then(({ data }) => {
             console.log(data);
             if (data && data.code === 0) {
               //保存登录token
@@ -140,6 +146,7 @@ export default {
 }
 .login-info > ul > li {
   font-size: 18px;
+  padding-bottom: 10px;
 }
 .login-border {
   display: flex;
@@ -154,6 +161,7 @@ export default {
   background-color: #fff;
 }
 .login-main > p {
+  padding: 15px 0px;
   color: #7d7d7d;
 }
 

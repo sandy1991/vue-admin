@@ -7,7 +7,10 @@
        <!-- 内容区 -->  
        <krt-tabs></krt-tabs>
        <div class="main" :style="{height: this.documentClientHeight - 150 + 'px'}"> 
-            <transition name="fade" mode="out-in">
+            <transition 
+             name="fade"
+             enter-active-class="animated fadeIn"
+            >
                 <router-view></router-view>
             </transition>
         </div>
