@@ -7,12 +7,14 @@ import router from './router';
 import store from '@/store'
 import VueCookie from 'vue-cookie';
 import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
-import './styles/krt.css';
 import '@/mock' 
 
+import 'element-ui/lib/theme-chalk/index.css';
+import './styles/krt.css';
+import animate from 'animate.css'
+
 import API from './api';
-import { isAuth } from '@/utils'
+import { hasPermission } from '@/utils'
 
 Vue.prototype.$API = API;
 
@@ -20,6 +22,8 @@ Vue.use(ElementUI);
 Vue.use(VueCookie);
 
 Vue.config.productionTip = false
+
+Vue.prototype.hasPermission = hasPermission // 挂载权限方法
 
 /* eslint-disable no-new */
 new Vue({

@@ -1,10 +1,10 @@
 import { baseUrl } from '@/config/env'
 /**
  * 是否有权限
- * @param {*} key
+ * @param {*}permission
  */
-export function isAuth (key) {
-  return JSON.parse(sessionStorage.getItem('permissions') || '[]').indexOf(key) !== -1 || false
+export function hasPermission (permission) {
+  return JSON.parse(sessionStorage.getItem('permissions') || '[]').indexOf(permission) !== -1 || false
 }
 
 /**
@@ -54,15 +54,6 @@ export function getStringLength (s) {
 }
 
 /**
- * 获取uuid
- */
-export function getUUID () {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-    return (c === 'x' ? (Math.random() * 16 | 0) : ('r&0x3' | '0x8')).toString(16)
-  })
-}
-
-/**
  * 设置浏览器头部标题
  */
 export const setTitle = function (title) {
@@ -74,7 +65,6 @@ export const setTitle = function (title) {
  * 总体路由处理器
  */
 export const resolveUrlPath = (url, name) => {
-
   let reqUrl = url;
   if (url.indexOf("http") != -1 || url.indexOf("https") != -1) {
       reqUrl = `/myiframe/urlPath?src=${reqUrl}&name=${name}`;
@@ -83,6 +73,7 @@ export const resolveUrlPath = (url, name) => {
   }
   return reqUrl;
 }
+
 /**
 * 总体路由设置器
 */

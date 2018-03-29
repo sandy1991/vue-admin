@@ -1,12 +1,12 @@
 <template>
-    <div class="container" :class="containerClass">
+    <div class="container" :class="{'sidebar-collapse':isCollapse}">
         <!-- 头部 -->
         <krt-header></krt-header>
         <!-- 左侧菜单start -->
        <krt-sidebar></krt-sidebar>
        <!-- 内容区 -->  
        <krt-tabs></krt-tabs>
-       <div class="main" :style="mainStyle">
+       <div class="main" :style="{height: this.documentClientHeight - 150 + 'px'}"> 
             <transition name="fade" mode="out-in">
                 <router-view></router-view>
             </transition>
@@ -23,7 +23,7 @@ import krtSidebar from "../layout/krt-sidebar";
 import krtFooter from "../layout/krt-footer";
 import krtTabs from '../layout/krt-tabs'; 
 
-import { mapMutations } from "vuex";
+import { mapState,mapMutations,mapGetters } from 'vuex';
 
 export default {
   data() {
@@ -38,17 +38,9 @@ export default {
     krtTabs
   },
   computed: {
-    //添加class
-    containerClass() {
-      return [{ "sidebar-collapse": this.$store.state.sidebarCollapse }];
-    },
-    //计算main-div高度
-    mainStyle() {
-      return [{ height: this.$store.state.documentClientHeight - 150 + "px" }];
-    }
+    ...mapGetters(['documentClientHeight','isCollapse']),
   },
   created () {
-    this.getUserInfo();
   },
   mounted() {
     this.resetDocumentClientHeight();
@@ -59,28 +51,8 @@ export default {
   methods: {
     // 重置窗口可视高度
     resetDocumentClientHeight() {
-      console.log(document.documentElement["clientHeight"]);
-      this.UPDATE_DOCUMENT_CLIENT_HEIGHT({
-        height: document.documentElement["clientHeight"]
-      });
-    },
-    //获取登录用户信息
-    getUserInfo(){
-       this.$API.user.getUserInfo().then(({ data  }) => {
-            console.log(data );
-            if (data && data.code === 0) {
-               this.SET_CURRENTUSER({ currentUser: data.user });
-               //this.DELETE_CONTENT_TABS([]);
-            } else {
-              this.$message.error(data.msg);
-            }
-          });
-    },
-    ...mapMutations([
-      "UPDATE_DOCUMENT_CLIENT_HEIGHT",
-      "SET_CURRENTUSER",
-      "DELETE_CONTENT_TABS"
-    ])
+      this.$store.commit("SET_DOCUMENT_CLIENT_HEIGHT",document.documentElement["clientHeight"]);
+    }
   }
 };
 </script>
@@ -91,12 +63,8 @@ body,
 html {
   overflow: hidden;
 }
-.sidebar-collapse .main {
-  margin-left: 64px;
-}
 .main {
   position: relative;
-  margin-left: 200px;
   overflow-y: auto;
   background-color: #f2f2f2;
 }

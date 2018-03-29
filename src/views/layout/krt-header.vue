@@ -1,9 +1,9 @@
 <template>
     <header class="krt-header">
-        <div class="logo" v-if="!$store.state.sidebarCollapse">
+        <div class="logo" v-if="!isCollapse">
             <span class="logo-name">Krt-admin</span>
         </div>
-        <a class="sidebar-toggle" @click="switchSidebarCollapseHandle()" :class="[{ 'sidebar-toggle-collapse': $store.state.sidebarCollapse }]">
+        <a class="sidebar-toggle" @click="switchSidebarCollapseHandle()" :class="[{ 'sidebar-toggle-collapse': isCollapse }]">
             <i class="iconfont icon-navicon"></i>
         </a>
         <div class="header-menu">
@@ -11,7 +11,7 @@
             <span><i class="el-icon-message"></i></span>
             <el-dropdown>
                 <span class="el-dropdown-link">
-                    {{ $store.state.currentUser.username }}
+                     {{ userInfo.username }} 
                     <i class="el-icon-arrow-down el-icon--right"></i>
                 </span>
                 <el-dropdown-menu slot="dropdown">
@@ -27,23 +27,35 @@
 
 
 <script>
-    import {
-        mapMutations
-    } from 'vuex'
+    import { mapState,mapMutations,mapGetters } from 'vuex';
     export default {
         data() {
             return {
-                isCollapse: false
-            };
+
+            }
+        },
+        computed:{
+            ...mapGetters(["isCollapse", "isFullScren","userInfo"]), 
+        },
+        created() {
+             this.getUserInfo();
         },
         methods: {
             // 切换侧边栏, 水平折叠收起状态
             switchSidebarCollapseHandle() {
-                this.SWITCH_SIDEBAR_COLLAPSE({
-                    collapse: !this.$store.state.sidebarCollapse
-                })
+               this.$store.commit("SET_COLLAPSE");
             },
-            ...mapMutations(['SWITCH_SIDEBAR_COLLAPSE', 'DELETE_CONTENT_TABS'])
+            //获取登录用户信息
+            getUserInfo(){
+                this.$API.user.getUserInfo().then(({ data  }) => {
+                    console.log(data );
+                    if (data && data.code === 0) {
+                    this.$store.commit('SET_USERIFNO',data.user);
+                    } else {
+                    this.$message.error(data.msg);
+                    }
+                });
+            },
         }
     }
 </script>
@@ -61,6 +73,7 @@
         right: 0;
         left: 0;
         z-index: 1030;
+        min-width: 540px;
         display: block;
     }
     .krt-header .logo {

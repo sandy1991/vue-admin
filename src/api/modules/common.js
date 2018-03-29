@@ -5,7 +5,8 @@ import requestParam from '../requestParam'
 // 获取验证码
 export function captcha () {
   var timestamp=new Date().getTime();
-  return requestUrl(`/captcha.jpg?t=`+timestamp)
+  return "http://www.krtservice.com/tour-sso/captcha?t="+timestamp;
+  //return requestUrl(`/captcha.jpg?t=`+timestamp)
 }
 
 // 登录

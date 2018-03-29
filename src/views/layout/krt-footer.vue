@@ -24,9 +24,6 @@ export default {
 
 
 <style scoped="scoped">
-.sidebar-collapse .main-footer {
-  margin-left: 64px;
-}
 .main-footer {
   height: 40px;
   line-height: 40px;
@@ -34,7 +31,6 @@ export default {
   padding: 5px 15px;
   color: #444;
   border-top: 1px solid #d2d6de;
-  margin-left: 200px;
 }
 .footer-version {
   float: right;

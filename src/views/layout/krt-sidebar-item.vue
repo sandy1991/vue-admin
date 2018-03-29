@@ -1,6 +1,6 @@
 <template>
   <div class="menu-wrapper">
-    <template v-for="(item,index) in menu">
+    <template v-for="item in menu">
       <el-menu-item v-if="item.children.length===0 " :index="item.href" @click="open(item)" :key="item.label">
         <i :class="item.icon"></i>
         <span slot="title">{{item.label}}</span>

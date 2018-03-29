@@ -8,6 +8,27 @@ html,body{
   height:100%;
   overflow: hidden;
 }
+
+.container > .asidebar{
+  width: 200px;
+}
+
+.sidebar-collapse > .asidebar{
+  width: 64px;
+}
+
+.container > .main,
+.container > .main-footer,
+.container > .tags-container{
+  margin-left: 200px;
+}
+
+.sidebar-collapse > .main,
+.sidebar-collapse > .main-footer,
+.sidebar-collapse > .tags-container{
+  margin-left: 64px;
+}
+
 .krt-search {
     background-color: #fff;
     border: 1px solid #d2d6de;
@@ -46,5 +67,27 @@ html,body{
 }
 
 .krt-wrapper{
-  padding: 15px;
+  padding: 10px;
+}
+
+
+::-webkit-scrollbar-track-piece {
+    background-color: #fff; 
+  }
+  ::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+    background-color: #fff;  
+  }
+  ::-webkit-scrollbar-thumb { 
+    border-radius: 5px;
+    background-color: hsla(220,4%,58%,.3);
+}
+
+#nprogress .bar{
+  background: #409eff;
+}
+
+ol, ul {
+  list-style: none;
 }

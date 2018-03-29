@@ -19,6 +19,7 @@
     <div class="krt-do-button">
         <el-button  type="primary" size="small" @click="addOrUpdateHandle()">新增</el-button>
         <el-button  type="danger" size="small" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
+        <el-button  type="primary" size="small" v-if="hasPermission('sys:user:excel')"  @click="addOrUpdateHandle()">导出excel</el-button>
     </div>
     <el-table
       :data="dataList"

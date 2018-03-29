@@ -1,55 +1,100 @@
 <template>
-<div class="login-container">
-  <el-form :model="loginForm" status-icon :rules="loginRules" ref="loginForm" label-width="100px" class="login-form">
-    <el-form-item label="账号" prop="username">
-      <el-input type="text" v-model="loginForm.username" auto-complete="on"></el-input>
-    </el-form-item>
-    <el-form-item label="密码" prop="password">
-      <el-input type="password" v-model="loginForm.password" auto-complete="on"></el-input>
-    </el-form-item>
-    <el-form-item>
-      <el-button type="primary" @click="submitForm('loginForm')">登录</el-button>
-    </el-form-item>
-  </el-form>
-</div>  
+	<div class="login-container pull-height" @keyup.enter.native="login">
+    <div class="login-info text-white animated fadeInLeft">
+      <h1>krt-admin 通用后台管理系统</h1>
+      <ul>
+        <li>前端基于Vue+Vuex+Vue-router+Element快速后台管理模板，采用token交互验证方式。</li>
+        <li>后端基于SpringBoot2+Mybatis,实现前后端分离。</li>
+      </ul>
+    </div>
+    <div class="login-border pull-height">
+      <div class="login-main animated fadeIn">
+        <h2>登录 krt-admin</h2>
+        <p>欢迎使用本系统</p>
+         <el-form class="loginForm" status-icon :rules="loginRules" ref="loginForm" :model="loginForm" label-width="0">
+          <el-form-item prop="username">
+            <el-input  v-model="loginForm.username" auto-complete="off" placeholder="请输入用户名"></el-input>
+          </el-form-item>
+          <el-form-item prop="password">
+            <el-input type="password" v-model="loginForm.password" auto-complete="off" placeholder="请输入密码">
+              <i class="el-icon-view el-input__icon" slot="prefix"></i>
+            </el-input>
+          </el-form-item>
+          <el-form-item prop="code">
+            <el-row :span="24">
+              <el-col :span="14">
+                <el-input v-model="loginForm.code" auto-complete="off" placeholder="请输入验证码"></el-input>
+              </el-col>
+              <el-col :span="10">
+                <div class="login-code">
+                  <img class="login-code-img" :src="captchaPath" @click="getCaptcha"/>
+                </div>
+              </el-col>
+            </el-row>
+          </el-form-item> 
+          <el-form-item>
+            <el-button type="primary" @click="login" class="login-submit">登录</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </div>
+	</div>
 </template>
+
+
+
 <script>
 import { mapMutations } from "vuex";
 import { mapGetters } from "vuex";
-import { setToken} from '@/utils/auth'
+import { setToken } from "@/utils/auth";
 export default {
   data() {
     return {
       loginForm: {
         usernaem: "",
-        password: ""
+        password: "",
+        code: "",
+        captchaPath: ""
       },
       loginRules: {
         username: [
           { required: true, trigger: "blur", message: "帐号不能为空" }
         ],
-        password: [{ required: true, trigger: "blur", message: "密码不能为空" }]
+        password: [
+          { required: true, trigger: "blur", message: "密码不能为空" }
+        ],
+        code: [
+          { min: 4, max: 4, message: "验证码长度为4位", trigger: "blur" },
+          { required: true, trigger: "blur", message: "验证码不能为空" }
+        ]
       }
     };
   },
-    computed: {
+  created() {
+    this.getCaptcha();
+  },
+  computed: {
     ...mapGetters(["tagWel"])
   },
   methods: {
+    // 获取验证码
+    getCaptcha() {
+      this.captchaPath = this.$API.common.captcha();
+    },
     //提交表单
-    submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+    login() {
+      this.$refs['loginForm'].validate(valid => {
         if (valid) {
           var params = {
             username: this.loginForm.username,
             password: this.loginForm.password
           };
-          this.$API.common.login(params).then(({ data  }) => {
-            console.log(data );
+          this.$API.common.login(params).then(({ data }) => {
+            console.log(data);
             if (data && data.code === 0) {
               //保存登录token
               setToken(data.token);
-             // this.$store.commit("ADD_TAG", this.tagWel);
+              //跳转首页
               this.$router.push({ path: this.tagWel.value });
             } else {
               this.$message.error(data.msg);
@@ -57,27 +102,65 @@ export default {
           });
         }
       });
-    },
-     ...mapMutations([
-      "SET_CURRENTUSER"
-    ])
+    }
   }
 };
 </script>
 
 <style scoped>
-.login-container {
-  position: fixed;
+.pull-height {
   height: 100%;
-  width: 100%;
-  background-color: #2d3a4b;
 }
-.login-form {
+.text-white {
+  color: #ffffff;
+}
+.login-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(0, 0, 0, 0.6);
+  position: relative;
+}
+.login-container::before {
+  z-index: -999;
+  content: "";
   position: absolute;
   left: 0;
-  right: 0;
-  width: 400px;
-  padding: 35px 35px 15px 35px;
-  margin: 120px auto;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../../assets/img/login.jpg");
+  background-size: cover;
+}
+.login-info {
+  padding-left: 60px;
+}
+.login-info > ul {
+  padding: 20px 0;
+}
+.login-info > ul > li {
+  font-size: 18px;
+}
+.login-border {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+}
+.login-main {
+  padding: 140px 60px;
+  width: 450px;
+  border-radius: 3px;
+  box-sizing: border-box;
+  background-color: #fff;
+}
+.login-main > p {
+  color: #7d7d7d;
+}
+
+.login-code-img {
+  width: 120px;
+  height: 38px;
+  margin-left: 10px;
+  border: 1px solid #ccc;
 }
 </style>

@@ -1,28 +1,29 @@
-import * as types from '../mutation-types'
+/**
+ * 用户模块组
+ */
+const user = {
 
-const state = {
-  id: 0,
-  name: ''
-}
-
-const getters = {
-}
-
-const actions = {
-}
-
-const mutations = {
-  [types.UPDATE_USER_ID] (state, { id }) {
-    state.id = id
+  state : {
+     userInfo:{},
+     permission: {},
+     menu: [],
   },
-  [types.UPDATE_USER_NAME] (state, { name }) {
-    state.name = name
-  }
-}
 
-export default {
-  state,
-  getters,
-  actions,
-  mutations
+  mutations:{
+    SET_USERIFNO: (state, userInfo) => {
+      state.userInfo = userInfo;
+    },
+    SET_PERMISSION: (state, permission) => {
+      state.permission = permission;
+    },
+    SET_MENU: (state, menu) => {
+        state.menu = menu;
+    },
+  },
+
+  actions:{
+
+  },
+  
 }
+export default user
