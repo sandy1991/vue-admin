@@ -17,7 +17,7 @@
   <div class="krt-box">
   <div class="krt-box-body">  
     <div class="krt-box-button"> 
-        <el-button  type="primary" size="small" @click="insertOrUpdateHandle()">新增</el-button>
+        <el-button  type="success" size="small" @click="insertOrUpdateHandle()">新增</el-button>
         <el-button  type="danger" size="small" @click="deleteHandle()" :disabled="dataListSelections.length <= 0">批量删除</el-button>
         <el-button  type="primary" size="small" v-if="hasPermission('sys:user:excel')"  @click="insertOrUpdateHandle()">导出excel</el-button>
     </div>
