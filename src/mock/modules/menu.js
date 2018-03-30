@@ -12,16 +12,43 @@ export function nav () {
         id: 14,
         label: "首页",
         href: '/wel/index',
-        icon: 'icon-shujuzhanshi2',
+        icon: 'iconfont icon-home',
         meta: {
           roles: ['admin'],
         },
         children: [],
       }, {
+        id: 9,
+        label: "系统管理",
+        icon: 'iconfont icon-system',
+        meta: {},
+        children: [
+          {
+            id: 10,
+            label: "用户管理",
+            href: '/admin/user',
+            icon: 'iconfont icon-user',
+            children: []
+          }, {
+            id: 11,
+            label: "角色管理",
+            href: '/admin/role',
+            icon: 'iconfont icon-role',
+            children: []
+          },
+          {
+            id: 12,
+            label: "菜单管理",
+            href: '/admin/menu',
+            icon: 'iconfont icon-resource',
+            children: []
+          }
+        ]
+      }, {
         id: 2,
         label: "iframe",
         href: '',
-        icon: 'icon-iframe',
+        icon: 'iconfont icon-iframe',
         meta: {},
         children: [{
           id: 3,
@@ -40,14 +67,14 @@ export function nav () {
         id: 5,
         label: "阿里图标",
         href: 'http://www.iconfont.cn/',
-        icon: 'icon-msnui-360',
+        icon: '',
         children: [],
     
       },{
         id: 6,
         label: "表格CRUD",
         href: '/table/index',
-        icon: 'icon-biaoge',
+        icon: '',
         meta: {},
         children: []
       }, {
@@ -57,60 +84,33 @@ export function nav () {
         query: {
           a: 1
         },
-        icon: 'icon-biaodan',
+        icon: '',
         meta: {},
         children: []
-      }, {
-        id: 9,
-        label: "系统管理",
-        icon: 'icon-liuliangyunpingtaitubiao08',
-        meta: {},
-        children: [
-          {
-            id: 10,
-            label: "用户管理",
-            href: '/admin/user',
-            icon: 'icon-yonghuguanli',
-            children: []
-          }, {
-            id: 11,
-            label: "角色管理",
-            href: '/admin/role',
-            icon: 'icon-jiaoseguanli',
-            children: []
-          },
-          {
-            id: 12,
-            label: "菜单管理",
-            href: '/admin/menu',
-            icon: 'icon-caidanguanli',
-            children: []
-          }
-        ]
       },{
         id: 9,
         label: "错误页",
-        icon: 'icon-liuliangyunpingtaitubiao08',
+        icon: 'iconfont icon-error',
         meta: {},
         children: [
           {
             id: 10,
             label: "403",
             href: '/403',
-            icon: 'icon-yonghuguanli',
+            icon: 'iconfont icon-error',
             children: []
           }, {
             id: 11,
             label: "404",
             href: '/404',
-            icon: 'icon-jiaoseguanli',
+            icon: 'iconfont icon-error',
             children: []
           },
           {
             id: 12,
             label: "500",
             href: '/500',
-            icon: 'icon-caidanguanli',
+            icon: 'iconfont icon-error',
             children: []
           }
         ]

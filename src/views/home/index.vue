@@ -9,8 +9,7 @@
        <div class="main" :style="{height: this.documentClientHeight - 150 + 'px'}"> 
             <transition 
              name="fade"
-             enter-active-class="animated fadeIn"
-            >
+             enter-active-class="animated fadeIn">
                 <router-view></router-view>
             </transition>
         </div>

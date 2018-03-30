@@ -9,7 +9,7 @@
           <el-input  placeholder="审批人" v-model="dataForm.param2"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary"  @click="getDataList()">查询</el-button>
+          <el-button type="primary" icon="el-icon-search"  @click="getDataList()">查询</el-button>
         </el-form-item>
       </el-form>
     </div>

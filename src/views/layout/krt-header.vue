@@ -7,11 +7,11 @@
             <i class="iconfont icon-navicon"></i>
         </a>
         <div class="header-tag">
-            <el-menu  class="el-menu-demo" mode="horizontal">
+            <el-menu  class="header-tag-menu" mode="horizontal">
             <el-menu-item index="1">xx子平台1</el-menu-item>
             <el-menu-item index="2">xx子平台2</el-menu-item>
             <el-menu-item index="3">xx子平台3</el-menu-item>
-            <el-submenu index="4">
+            <!-- <el-submenu index="4">
                 <template slot="title">x子平台</template>
                 <el-menu-item index="2-1">子集平台1</el-menu-item>
                 <el-menu-item index="2-2">子集平台2</el-menu-item>
@@ -22,12 +22,12 @@
                     <el-menu-item index="2-4-2">子集平台4-2</el-menu-item>
                     <el-menu-item index="2-4-3">子集平台4-3</el-menu-item>
                 </el-submenu>
-            </el-submenu>
+            </el-submenu> -->
             </el-menu>
         </div>
         <div class="header-menu">
             <el-tooltip class="item" effect="dark" content="通知" placement="bottom">
-                <i class="iconfont icon-lingdang-xianxing"></i>
+                <i class="iconfont icon-msg-system"></i>
             </el-tooltip>
             <el-tooltip class="item" effect="dark" :content="isFullScren?'退出全屏':'全屏'" placement="bottom">
                  <i class="iconfont" :class="isFullScren ? 'icon-fullscreenalt' : 'icon-fullscreenexit'" @click="handleScreen"></i>
@@ -112,7 +112,7 @@
 
 <style scoped="scoped">
     .krt-header {
-        background-color: #ffffff;
+        background-color: #ffffff!important;
         border-bottom: 2px solid #495060;
         color: #606266;
         text-align: center;
@@ -125,7 +125,7 @@
         z-index: 1030;
         min-width: 950px;
         display: block;
-    }
+    } 
     .krt-header .logo {
         float: left;
     }
@@ -134,7 +134,7 @@
     }
     .header-tag .el-menu--horizontal{
         border: 0px;
-    }
+    } 
     .krt-header .logo .logo-name {
         display: block;
         float: left;
@@ -165,8 +165,12 @@
         padding: 0px 15px;
     }
 
-    .sidebar-toggle>i {
+    .sidebar-toggle> i {
         font-size: 34px !important;
+    }
+
+    .header-tag-menu{
+        background-color: transparent;
     }
 
     .header-menu {
@@ -178,7 +182,7 @@
 
     .header-menu > .item{
         margin-right: 20px
-    }
+    } 
     .el-menu--horizontal>.el-menu-item,
     .el-menu--horizontal>.el-submenu .el-submenu__title{
         color: #606266;

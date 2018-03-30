@@ -7,13 +7,10 @@ import { setTitle } from '@/utils';
 import { validatenull } from '@/utils/validate';
 import { asyncRouterMap } from '@/router'
 NProgress.configure({ showSpinner: false })// NProgress Configuration
-function hasPermission(roles, permissionRoles) {
-    if (!permissionRoles) return true
-    return roles.some(role => permissionRoles.indexOf(role) >= 0)
-}
+
+
 //定义白名单(路径不需要tag打开)
-const whiteList = ['/login', '/404', '/401', '/lock']
-const lockPage = '/lock'
+const whiteList = ['/login', '/404', '/403', '/500']
 
 // 动态添加可访问路由表
 router.addRoutes(asyncRouterMap); 
@@ -35,6 +32,7 @@ router.beforeEach((to, from, next) => {
     //检测是否存在token
     if (getToken()) {
         //存在token 放行
+        //判断url权限（待处理）
         next();
     } else {
         //不存在token
@@ -49,14 +47,6 @@ router.beforeEach((to, from, next) => {
     }
     
 })
-
-//寻找子菜单的父类
-function findMenuParent(tag) {
-    let tagCurrent = [];
-    const menu = store.getters.menu;
-    tagCurrent.push(tag);
-    return tagCurrent;
-}
 
 //路由进入后
 router.afterEach((to, from) => {

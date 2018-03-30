@@ -225,9 +225,10 @@
     margin-left: 200px;
     border-bottom: 1px solid #d2d6de;
   }
+  
   .sidebar-collapse .tags-container {
     margin-left: 64px;
-  }
+  } 
   .tags-box {
     position: relative;
     box-sizing: border-box;

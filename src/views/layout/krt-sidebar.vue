@@ -1,12 +1,13 @@
 <template>
-  <aside class="asidebar" >
+  <aside class="asidebar" :style="{height: this.documentClientHeight - 60 + 'px'}">
         <el-menu
             :collapse="isCollapse"
-            background-color="#545c64"
-            text-color="#fff"
-            unique-opened :default-active="tag.value" 
+            background-color="#222d32"
+            text-color="#b8c7ce"
+            unique-opened 
+            :default-active="tag.value" 
             active-text-color="#409eff">
-            <sidebar-item :menu="menu" :show="!isCollapse"></sidebar-item>
+            <sidebar-item :menu="menu"></sidebar-item>
         </el-menu>
     </aside>
 </template>
@@ -19,7 +20,6 @@ import { mapState,mapMutations,mapGetters } from 'vuex';
 export default {
   data() {
     return {
-      menuNavActive: "1-1"
     };
   },
   components: {
@@ -29,7 +29,7 @@ export default {
     this.getMenu();
   },
   computed: {
-    ...mapGetters(["tag", "isCollapse", "menu"]),
+    ...mapGetters(['tag', 'isCollapse', 'menu','documentClientHeight']),
   },
   methods: {
     // 获取菜单导航列表 / 权限
@@ -57,9 +57,8 @@ export default {
 
 <style scoped="scoped">
 .asidebar {
-  background-color: #545c64;
+  background-color: #222d32;
   color: #333;
-  text-align: center;
   border-right: solid 1px #d2d6de;
   top: 60px;
   position: fixed;
@@ -67,10 +66,7 @@ export default {
   bottom: 0;
   height: 100%;
   overflow-y: auto;
-  padding-bottom: 60px;
 }
-
-
 .el-menu {
   border-right: 0px;
 }
