@@ -260,7 +260,6 @@
   }
   .tags-list {
     position: absolute;
-    padding: 2px 10px;
     overflow: visible;
     white-space: nowrap;
     transition: left .3s ease;
