@@ -2,29 +2,42 @@
   <div class="tags-container">
     <!-- tag盒子 -->
     <div class="tags-box" ref="tagBox">
-      <div class="tags-list" ref="tagsList" @mousewheel="hadelMousewheel" @mouseup="hadelMouseUp" @mousemove="hadelMouse" @mousedown="hadelMousestart" @touchup="hadelMouseUp" @touchmove="hadelMouse" @touchstart="hadelMousestart">
-        <div ref="tagsPageOpened" class="tag-item" :name="item.value" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item)">
-          <span class="iconfont icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span>
-          <span class="tag-text">{{item.label}}</span>
-          <i class="el-icon-close tag-close" @click.stop="closeTag(item)" v-if="item.close"></i>
-        </div>
+      <!-- 左移 -->
+      <div class="tags-prev">
+         <a href="javascript:;" class="prev"><i class="iconfont icon-left2"></i></a>
       </div>
+      <!-- 右移 -->
+      <div class="tags-next">
+         <a href="javascript:;" class="next"><i class="iconfont icon-right2"></i></a>
+      </div>
+      <!-- 更多 -->
       <el-dropdown class="tags-menu pull-right">
-        <el-button type="primary" size="mini">
-          更多
-          <i class="el-icon-arrow-down el-icon--right"></i>
-        </el-button>
+        <span class="el-dropdown-link">
+          <a href="javascript:;" class="more"><i class="iconfont icon-down"></i></a>
+        </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item @click.native="closeOthersTags">关闭其他</el-dropdown-item>
           <el-dropdown-item @click.native="closeAllTags">关闭全部</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+      <!-- tab区域 -->
+      <div class="tags-content">
+          <div class="tags-list" ref="tagsList" 
+              @mousewheel="hadelMousewheel" 
+              @mouseup="hadelMouseUp" 
+              @mousemove="hadelMouse" 
+              @mousedown="hadelMousestart" 
+              @touchup="hadelMouseUp" 
+              @touchmove="hadelMouse" 
+              @touchstart="hadelMousestart">
+            <div ref="tagsPageOpened" class="tag-item" :class="{'is-active':nowTagValue==item.value}" :name="item.value" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item)">
+              <!-- <span class="iconfont icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span> -->
+              <span class="tag-text">{{item.label}}</span>
+              <i class="el-icon-close tag-close" @click.stop="closeTag(item)" v-if="item.close"></i>
+            </div>
+          </div>
+        </div>
     </div>
-    <!-- <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
-            <li @click="closeTag(selectedTag)">关闭</li>
-            <li @click="closeOthersTags">关闭其他</li>
-            <li @click="closeAllTags">关闭全部</li>
-          </ul> -->
   </div>
 </template>
 <script>
@@ -41,7 +54,7 @@
     data() {
       return {
         visible: false,
-        tagBodyLeft: 0,
+        tagBodyLeft: 40,
         lock: false,
         startX: 0,
         startY: 0,
@@ -107,6 +120,8 @@
           this.startX = e.changedTouches[0].pageX;
           this.startY = e.changedTouches[0].pageY;
         }
+        console.log(this.startX);
+        console.log(this.startY);
       },
       hadelMouse(e) {
         const boundarystart = 0,
@@ -142,9 +157,11 @@
         const boundarystart = 0,
           boundaryend =
           this.$refs.tagsList.offsetWidth - this.$refs.tagBox.offsetWidth + 100;
+          console.log("ssssssssss",boundaryend)
         // Y>0向左滑动
         if (e.deltaY > 0 && this.tagBodyLeft >= -boundaryend) {
           this.tagBodyLeft = this.tagBodyLeft - step;
+          console.log(this.tagBodyLeft);
           // Y<0向右滑动
         } else if (e.deltaY < 0 && this.tagBodyLeft < boundarystart) {
           this.tagBodyLeft = this.tagBodyLeft + step;
@@ -217,6 +234,7 @@
   };
 </script>
 <style scoped>
+   
   .tags-container {
     position: relative;
     box-sizing: border-box;
@@ -237,6 +255,9 @@
     height: 40px;
     background: #ffffff;
   }
+  .tags-content {
+    margin-left: 40px;
+  }
   .tags-list {
     position: absolute;
     padding: 2px 10px;
@@ -249,25 +270,21 @@
     font-size: 11px !important;
   }
   
-  
-  
   .is-active {
     color: #4e97d9;
 }
   .tag-item {
     position: relative;
     display: inline-block;
-    height: 30px;
-    line-height: 30px;
-    margin: 2px 4px 2px 0;
+    min-width: 0;
+    line-height: 40px;
+    max-width: 160px;
     padding: 0 10px;
-    border: 1px solid #e9eaec;
-    border-radius: 3px;
+    border-right: 1px solid #f6f6f6;
     background: #fff;
     color: #495060!important;
-    font-size: 12px;
+    font-size: 14px;
     vertical-align: middle;
-    opacity: 1;
     overflow: hidden;
     cursor: pointer;
   }
@@ -280,17 +297,57 @@
   .tag-item:hover {
     opacity: .85;
   }
+
+  .tags-prev {
+    position: absolute;
+    top: 0;
+    left:0px;
+    display: flex;
+    height: 40px;
+    line-height: 40px;
+    width: 40px;
+    text-align: center;
+    border-right: 1px solid #f6f6f6;
+    background: #ffffff;
+  } 
+  .prev{
+    height: 40px;
+    display: block;
+    padding: 0 10px;
+  }
+
+  .tags-next {
+    position: absolute;
+    top: 0;
+    right: 40px;
+    display: flex;
+    height: 40px;
+    line-height: 40px;
+    width: 40px;
+    text-align: center;
+    border-left: 1px solid #f6f6f6;
+    background: #ffffff;
+  } 
+  .next{
+    height: 40px;
+    display: block;
+    padding: 0 10px;
+  }
   .tags-menu {
     position: absolute;
     top: 0;
     right: 0;
     display: flex;
-    align-items: center;
-    padding: 0 15px;
-    height: 96%;
-    box-sizing: border-box;
-    background-color: #fff;
-    box-shadow: 0px 0 3px 3px rgba(0, 0, 0, 0.1);
+    line-height: 40px;
+    width: 40px;
+    text-align: center;
+    border-left: 1px solid #f6f6f6;
+    background: #ffffff;
+  }
+  .more{
+    height: 40px;
+    display: block;
+    padding: 0 10px;
   }
   .contextmenu {
     margin: 0;
@@ -300,7 +357,7 @@
     list-style-type: none;
     padding: 5px 0;
     border-radius: 4px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     color: #333;
     box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.3);
@@ -314,6 +371,13 @@
   }
   .contextmenu>li:hover {
     background: #eee;
+  }
+  a {
+    color: #495060;
+    text-decoration:none;
+  }
+  .is-active{
+      background-color: #f6f6f6;
   }
 </style>
 

@@ -1,17 +1,17 @@
 <template>
     <header class="krt-header">
-        <div class="logo" v-if="!isCollapse">
+        <div class="logo">
             <span class="logo-name">Krt-admin</span>
         </div>
-        <a class="sidebar-toggle" @click="switchSidebarCollapseHandle()" :class="[{ 'sidebar-toggle-collapse': isCollapse }]">
+        <a class="sidebar-toggle" @click="switchSidebarCollapseHandle()">
             <i class="iconfont icon-navicon"></i>
         </a>
-        <div class="header-tag">
+        <!-- <div class="header-tag">
             <el-menu  class="header-tag-menu" mode="horizontal">
             <el-menu-item index="1">xx子平台1</el-menu-item>
             <el-menu-item index="2">xx子平台2</el-menu-item>
             <el-menu-item index="3">xx子平台3</el-menu-item>
-            <!-- <el-submenu index="4">
+            <el-submenu index="4">
                 <template slot="title">x子平台</template>
                 <el-menu-item index="2-1">子集平台1</el-menu-item>
                 <el-menu-item index="2-2">子集平台2</el-menu-item>
@@ -22,9 +22,9 @@
                     <el-menu-item index="2-4-2">子集平台4-2</el-menu-item>
                     <el-menu-item index="2-4-3">子集平台4-3</el-menu-item>
                 </el-submenu>
-            </el-submenu> -->
+            </el-submenu> 
             </el-menu>
-        </div>
+        </div> -->
         <div class="header-menu">
             <el-tooltip class="item" effect="dark" content="通知" placement="bottom">
                 <i class="iconfont icon-msg-system"></i>
@@ -129,6 +129,9 @@
     .krt-header .logo {
         float: left;
     }
+    .sidebar-collapse>.krt-header>.logo{
+        display: none;
+    }
     .krt-header .header-tag{
         float: left;
     }
@@ -154,19 +157,19 @@
         background-color: transparent;
         background-image: none;
         height: 60px;
-        font-family: fontAwesome;
+        padding: 0px 15px;
     }
-    .sidebar-toggle-collapse {
+
+    .sidebar-collapse > .krt-header > .sidebar-toggle {
         transform: rotate(90deg);
         -ms-transform: rotate(90deg);
         /* IE 9 */
         -webkit-transform: rotate(90deg);
         /* Safari and Chrome */
-        padding: 0px 15px;
     }
 
     .sidebar-toggle> i {
-        font-size: 34px !important;
+        font-size: 27px !important;
     }
 
     .header-tag-menu{

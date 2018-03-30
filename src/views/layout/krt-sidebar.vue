@@ -2,18 +2,18 @@
   <aside class="asidebar" :style="{height: this.documentClientHeight - 60 + 'px'}">
         <el-menu
             :collapse="isCollapse"
-            background-color="#222d32"
+            background-color="#20222A"
             text-color="#b8c7ce"
             unique-opened 
             :default-active="tag.value" 
             active-text-color="#409eff">
-            <sidebar-item :menu="menu"></sidebar-item>
+            <krt-sidebar-item :menu="menu"></krt-sidebar-item>
         </el-menu>
     </aside>
 </template>
 
 <script>
-import sidebarItem from "./krt-sidebar-item";
+import krtSidebarItem from "./krt-sidebar-item";
 import { mapState,mapMutations,mapGetters } from 'vuex';
 
 
@@ -23,7 +23,7 @@ export default {
     };
   },
   components: {
-    sidebarItem
+    krtSidebarItem
   },
   created() {
     this.getMenu();
@@ -57,7 +57,7 @@ export default {
 
 <style scoped="scoped">
 .asidebar {
-  background-color: #222d32;
+  background-color: #20222A !important;
   color: #333;
   border-right: solid 1px #d2d6de;
   top: 60px;

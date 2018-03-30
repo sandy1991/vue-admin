@@ -15,7 +15,7 @@
             <i :class="child.icon?child.icon:'iconfont icon-pointer'"></i>
             <span slot="title">{{child.label}}</span>
           </el-menu-item>
-          <sidebar-item v-else :menu="[child]" :key="cindex"></sidebar-item>
+          <krt-sidebar-item v-else :menu="[child]" :key="cindex"></krt-sidebar-item>
         </template>
       </el-submenu>
     </template>
@@ -57,12 +57,10 @@ export default {
 i{
   margin-right: 10px;
 }
-.el-menu--inline{
-  background-color: #2c3b41!important;
-}
 
 .el-menu--inline > li{
-  background-color: #2c3b41!important;
+  background-color: rgba(0,0,0,.3)!important;
 }
+
 </style>
 
