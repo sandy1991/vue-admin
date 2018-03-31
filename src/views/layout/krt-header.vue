@@ -116,14 +116,13 @@
         border-bottom: 2px solid #495060;
         color: #606266;
         text-align: center;
-        height: 60px;
-        line-height: 60px;
+        height: 50px;
+        line-height: 50px;
         position: fixed;
         top: 0;
         right: 0;
         left: 0;
         z-index: 1030;
-        min-width: 950px;
         display: block;
     } 
     .krt-header .logo {
@@ -141,9 +140,9 @@
     .krt-header .logo .logo-name {
         display: block;
         float: left;
-        height: 60px;
+        height: 50px;
         font-size: 20px;
-        line-height: 60px;
+        line-height: 50px;
         text-align: center;
         width: 200px;
         font-weight: 700;
@@ -156,7 +155,7 @@
         float: left;
         background-color: transparent;
         background-image: none;
-        height: 60px;
+        height: 50px;
         padding: 0px 15px;
     }
 
@@ -192,8 +191,8 @@
     }
 
     .user-logo {
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         border-radius: 50%;
         cursor: pointer;
         display: inline-block;

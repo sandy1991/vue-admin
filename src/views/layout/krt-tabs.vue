@@ -84,28 +84,74 @@ export default {
         });
       }, 1);
     },
-    prevHandle(e){
-        var boundaryend = this.$refs.tagsList.offsetWidth - this.$refs.tagBox.offsetWidth;
-        console.log("this.$refs.tagsList.offsetWidth", this.$refs.tagsList.offsetWidth);
-        console.log("this.$refs.tagBox.offsetWidth", this.$refs.tagBox.offsetWidth);
-        console.log("可视化区域宽度：",this.$refs.tagBox.offsetWidth-120)
-        console.log("整个Tag区域宽度：", this.$refs.tagsList.offsetWidth)
-        console.log("tagBodyLeft", this.tagBodyLeft); 
-        if(boundaryend>0){
-          this.tagBodyLeft=40-boundaryend-120;
-          console.log("tagBodyLeft", this.tagBodyLeft); 
+    prevHandle(e) {
+      var boundaryend =
+        this.$refs.tagsList.offsetWidth - this.$refs.tagBox.offsetWidth;
+      console.log(
+        "this.$refs.tagsList.offsetWidth",
+        this.$refs.tagsList.offsetWidth
+      );
+      console.log(
+        "this.$refs.tagBox.offsetWidth",
+        this.$refs.tagBox.offsetWidth
+      );
+      console.log("可视化区域宽度：", this.$refs.tagBox.offsetWidth - 120);
+      console.log("整个Tag区域宽度：", this.$refs.tagsList.offsetWidth);
+      console.log("tagBodyLeft", this.tagBodyLeft);
+      var marginLeftVal = Math.abs(parseInt(this.tagBodyLeft));
+      var tabOuterWidth = 120;
+      var visibleWidth = this.$refs.tagBox.offsetWidth - tabOuterWidth;
+      var scrollVal = 0;
+      if (this.$refs.tagsList.offsetWidth < visibleWidth) {
+        return false;
+      } else {
+        var i = 0;
+        var tabElement = this.$refs.tagsList.children[i];
+        var offsetVal = 0;
+        while(tabElement &&(offsetVal + tabElement.offsetWidth <= marginLeftVal)) {
+          offsetVal += tabElement.offsetWidth;
+          tabElement = this.$refs.tagsList.children[i++];
         }
-       
+        // offsetVal = 0;
+        if (offsetVal - 0 > visibleWidth) {
+          var offsetVal = 0;
+          while(tabElement && (offsetVal + tabElement.offsetWidth < visibleWidth)) {
+            offsetVal += tabElement.offsetWidth;
+            tabElement = this.$refs.tagsList.children[--i];
+          }
+          while (i > 0) {
+            scrollVal = scrollVal + this.$refs.tagsList.children[--i].offsetWidth;
+          }
+        }
+        this.tagBodyLeft = 40 - scrollVal;
+      }
     },
-    nextHandle(e){
-        var boundaryend = this.$refs.tagsList.offsetWidth - this.$refs.tagBox.offsetWidth;
-        console.log("this.$refs.tagsList.offsetWidth", this.$refs.tagsList.offsetWidth);
-        console.log("this.$refs.tagBox.offsetWidth", this.$refs.tagBox.offsetWidth-120);
-        console.log("可视化区域宽度：",this.$refs.tagBox.offsetWidth-120)
-        console.log("tagBodyLeft", this.tagBodyLeft); 
-        if(boundaryend>0 && (this.tagBodyLeft-0)<=40){
-          this.tagBodyLeft=this.tagBodyLeft+boundaryend;
+    nextHandle(e) {
+      var marginLeftVal = Math.abs(parseInt(this.tagBodyLeft));
+      var tabOuterWidth = 120;
+      var visibleWidth = this.$refs.tagBox.offsetWidth - tabOuterWidth;
+      var scrollVal = 0;
+      if (this.$refs.tagsList.offsetWidth < visibleWidth) {
+        return false;
+      } else {
+        var i = 0;
+        var tabElement = this.$refs.tagsList.children[i];
+        var offsetVal = 0;
+        while (tabElement && (offsetVal + tabElement.offsetWidth <= marginLeftVal)) {
+          offsetVal += tabElement.offsetWidth;
+          tabElement = this.$refs.tagsList.children[i++];
         }
+        offsetVal = 0;
+        while (tabElement && (offsetVal + tabElement.offsetWidth < visibleWidth)) {
+          offsetVal += tabElement.offsetWidth;
+          tabElement = this.$refs.tagsList.children[++i];
+        }
+        while (i > 0) {
+          //alert(i--);
+          scrollVal = scrollVal + this.$refs.tagsList.children[--i].offsetWidth;
+        }
+        this.tagBodyLeft = 40 - scrollVal;
+      }
     },
     openMenu(tag, e) {
       if (this.tagList.length == 1) {
@@ -179,7 +225,7 @@ export default {
   position: relative;
   box-sizing: border-box;
   overflow: hidden;
-  padding-top: 60px;
+  padding-top: 50px;
   margin-left: 200px;
   border-bottom: 1px solid #d2d6de;
 }
@@ -217,7 +263,7 @@ export default {
   display: inline-block;
   min-width: 0;
   line-height: 40px;
-  max-width: 160px;
+  max-width: 150px;
   padding: 0 10px;
   border-right: 1px solid #d2d6de;
   background: #fff;

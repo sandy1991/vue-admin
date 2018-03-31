@@ -60,7 +60,7 @@ export default {
   background-color: #20222A !important;
   color: #333;
   border-right: solid 1px #d2d6de;
-  top: 60px;
+  top: 50px;
   position: fixed;
   left: 0;
   bottom: 0;

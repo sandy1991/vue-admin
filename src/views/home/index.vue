@@ -6,7 +6,7 @@
        <krt-sidebar></krt-sidebar>
        <!-- 内容区 -->  
        <krt-tabs></krt-tabs>
-       <div class="main" :style="{height: this.documentClientHeight - 150 + 'px'}"> 
+       <div class="main" :style="{height: this.documentClientHeight - 140 + 'px'}"> 
             <transition 
              name="fade"
              enter-active-class="animated fadeIn">
