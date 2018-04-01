@@ -1,6 +1,6 @@
 <template>
-  <iframe v-if="$route.query.src" :src='$route.query.src' class="iframe" ref="iframe"></iframe>
-  <iframe v-else :src="urlPath" class="iframe" ref="iframe"></iframe>
+  <iframe v-if="$route.query.src" :src='$route.query.src' class="iframe" ref="iframe" :style="{height: this.documentClientHeight - 143 + 'px'}"></iframe>
+  <iframe v-else :src="urlPath" class="iframe" ref="iframe" :style="{height: this.documentClientHeight - 143 + 'px'}"></iframe>
 </template>
 
 <script>
@@ -8,7 +8,7 @@ import { mapState, mapGetters } from "vuex";
 import NProgress from "nprogress"; // progress bar
 import "nprogress/nprogress.css"; // progress bar style
 export default {
-  name: "myiframe",
+  name: "iframe",
   data() {
     return {
       urlPath: this.getUrlPath() //iframe src 路径
@@ -19,7 +19,6 @@ export default {
   },
   mounted() {
     this.load();
-    this.resize();
   },
   props: ["routerPath"],
   watch: {
@@ -31,8 +30,10 @@ export default {
       this.urlPath = this.getUrlPath();
     }
   },
+  computed: {
+    ...mapGetters(["tagList","documentClientHeight"]),
+  },
   components: {
-    ...mapGetters(["tagList"]),
     tagListNum: function() {
       return this.tagList.length != 0;
     }
@@ -45,12 +46,6 @@ export default {
     // 隐藏等待狂
     hide() {
       NProgress.done();
-    },
-    // 加载浏览器窗口变化自适应
-    resize() {
-      window.onresize = () => {
-        this.iframeInit();
-      };
     },
     // 加载组件
     load() {
@@ -72,8 +67,6 @@ export default {
     //iframe窗口初始化
     iframeInit() {
       const iframe = this.$refs.iframe;
-      const clientHeight = document.documentElement.clientHeight - 143;
-      iframe.style.height = `${clientHeight}px`;
       if (iframe.attachEvent) {
         iframe.attachEvent("onload", () => {
           this.hide();
@@ -87,7 +80,7 @@ export default {
     getUrlPath: function() {
       //获取 iframe src 路径
       let url = window.location.href;
-      url = url.replace("/myiframe", "");
+      url = url.replace("/iframe", "");
       return url;
     }
   }
@@ -97,7 +90,6 @@ export default {
 <style scoped>
 .iframe {
   width: 100%;
-  height: 100%;
   border: 0;
   overflow: hidden;
   box-sizing: border-box;

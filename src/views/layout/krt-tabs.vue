@@ -22,8 +22,13 @@
       </el-dropdown>
       <!-- tab区域 -->
       <div class="tags-list" ref="tagsList">
-        <div ref="tagsPageOpened" class="tag-item" :class="{'is-active':nowTagValue==item.value}" :name="item.value" @contextmenu.prevent="openMenu(item,$event)" v-for="(item,index) in tagList" :key="index" @click="openUrl(item)">
-          <span class="iconfont icon-yuan tag-item-icon" :class="{'is-active':nowTagValue==item.value}"></span> 
+        <div ref="tagsPageOpened" class="tag-item" 
+        :class="{'is-active':nowTagValue==item.value}" 
+        :name="item.value" @
+        contextmenu.prevent="openMenu(item,$event)" 
+        v-for="(item,index) in tagList" :key="index" 
+        @click="openUrl(item)">
+          <span class="iconfont icon-yuan tag-item-icon"></span> 
           <span class="tag-text">{{item.label}}</span>
           <i class="el-icon-close tag-close" @click.stop="closeTag(item)" v-if="item.close"></i>
         </div>
@@ -39,7 +44,7 @@ export default {
   components: {},
   data() {
     return {
-      visible: false,
+      //visible: false,
       tagBodyLeft: 40,
       selectedTag: {}
     };
@@ -51,13 +56,6 @@ export default {
   watch: {
     $route(to) {
       this.init();
-    },
-    visible(value) {
-      if (value) {
-        document.body.addEventListener("click", this.closeMenu);
-      } else {
-        document.body.removeEventListener("click", this.closeMenu);
-      }
     },
     tagBodyLeft(value) {
       this.$refs.tagsList.style.left = value + "px";
@@ -85,43 +83,47 @@ export default {
       }, 1);
     },
     prevHandle(e) {
-      var boundaryend =
-        this.$refs.tagsList.offsetWidth - this.$refs.tagBox.offsetWidth;
-      console.log(
-        "this.$refs.tagsList.offsetWidth",
-        this.$refs.tagsList.offsetWidth
-      );
-      console.log(
-        "this.$refs.tagBox.offsetWidth",
-        this.$refs.tagBox.offsetWidth
-      );
-      console.log("可视化区域宽度：", this.$refs.tagBox.offsetWidth - 120);
-      console.log("整个Tag区域宽度：", this.$refs.tagsList.offsetWidth);
-      console.log("tagBodyLeft", this.tagBodyLeft);
+      //滑块左边遮挡宽度
       var marginLeftVal = Math.abs(parseInt(this.tagBodyLeft));
+      //遮挡区域
       var tabOuterWidth = 120;
+      //可视滑动区域
       var visibleWidth = this.$refs.tagBox.offsetWidth - tabOuterWidth;
       var scrollVal = 0;
+      //但需要显示的滑块小于可视区域宽度 不需要滑动
       if (this.$refs.tagsList.offsetWidth < visibleWidth) {
         return false;
       } else {
-        var i = 0;
-        var tabElement = this.$refs.tagsList.children[i];
+        var tIndex = 0;
+        var tabElement;
         var offsetVal = 0;
-        while(tabElement &&(offsetVal + tabElement.offsetWidth <= marginLeftVal)) {
-          offsetVal += tabElement.offsetWidth;
-          tabElement = this.$refs.tagsList.children[i++];
-        }
-        // offsetVal = 0;
-        if (offsetVal - 0 > visibleWidth) {
-          var offsetVal = 0;
-          while(tabElement && (offsetVal + tabElement.offsetWidth < visibleWidth)) {
+        this.refsTag.forEach((item, index) => {
+          if (offsetVal <= marginLeftVal) {
+            offsetVal = offsetVal + item.offsetWidth;
+            tIndex = index;
+            tabElement = item;
+          }
+        });
+        //tabElement = tabElement.nextSibling;
+        console.log(tabElement);
+        console.log(offsetVal);
+        console.log(visibleWidth);
+        if (offsetVal > visibleWidth) {
+          offsetVal = 0;
+          while (
+            tabElement &&
+            offsetVal + tabElement.offsetWidth < visibleWidth
+          ) {
             offsetVal += tabElement.offsetWidth;
-            tabElement = this.$refs.tagsList.children[--i];
+            tabElement = tabElement.previousSibling;
           }
-          while (i > 0) {
-            scrollVal = scrollVal + this.$refs.tagsList.children[--i].offsetWidth;
+          console.log(tabElement);
+          // tabElement = tabElement.previousSibling;
+          while (tabElement) {
+            scrollVal += tabElement.offsetWidth;
+            tabElement = tabElement.previousSibling;
           }
+          console.log(scrollVal);
         }
         this.tagBodyLeft = 40 - scrollVal;
       }
@@ -131,68 +133,105 @@ export default {
       var tabOuterWidth = 120;
       var visibleWidth = this.$refs.tagBox.offsetWidth - tabOuterWidth;
       var scrollVal = 0;
-      if (this.$refs.tagsList.offsetWidth < visibleWidth) {
+      console.log(this.$refs.tagsList.offsetWidth);
+      console.log(visibleWidth + marginLeftVal);
+      if (this.$refs.tagsList.offsetWidth <= visibleWidth + marginLeftVal + 40) {
         return false;
       } else {
-        var i = 0;
-        var tabElement = this.$refs.tagsList.children[i];
+        var tIndex = 0;
+        var lastElement;
+        var tabElement;
         var offsetVal = 0;
-        while (tabElement && (offsetVal + tabElement.offsetWidth <= marginLeftVal)) {
-          offsetVal += tabElement.offsetWidth;
-          tabElement = this.$refs.tagsList.children[i++];
-        }
+        this.refsTag.forEach((item, index) => {
+          if (offsetVal <= marginLeftVal) {
+            offsetVal = offsetVal + item.offsetWidth;
+            tIndex = index;
+            tabElement = item;
+          }
+          lastElement = item;
+        });
+        console.log(tabElement);
+        // console.log(visibleWidth);
         offsetVal = 0;
-        while (tabElement && (offsetVal + tabElement.offsetWidth < visibleWidth)) {
+        while (
+          tabElement &&
+          offsetVal + tabElement.offsetWidth < visibleWidth
+        ) {
           offsetVal += tabElement.offsetWidth;
-          tabElement = this.$refs.tagsList.children[++i];
+          tabElement = tabElement.nextSibling;
+          console.log(tabElement);
         }
-        while (i > 0) {
-          //alert(i--);
-          scrollVal = scrollVal + this.$refs.tagsList.children[--i].offsetWidth;
+        //tabElement = tabElement.previousSibling;
+        while (tabElement) {
+          console.log(tabElement.offsetWidth);
+          scrollVal += tabElement.offsetWidth;
+          tabElement = tabElement.previousSibling;
         }
-        this.tagBodyLeft = 40 - scrollVal;
+        console.log(scrollVal);
+        if (scrollVal > 0) {
+          this.tagBodyLeft = 40 - scrollVal;
+        }
       }
     },
     openMenu(tag, e) {
       if (this.tagList.length == 1) {
         return;
       }
-      this.visible = true;
       this.selectedTag = tag;
-      this.left = e.clientX;
-      this.top = e.clientY;
     },
     closeOthersTags() {
       this.$store.commit("DEL_TAG_OTHER");
     },
-    closeMenu() {
-      this.visible = false;
-    },
     closeAllTags() {
-      this.$store.commit("DEL_ALL_TAG");
-      this.$router.push({
-        path: resolveUrlPath(this.tagWel.value),
-        query: this.tagWel.query
-      });
+      if(this.$refs.tagsList.children.length>1){
+        this.$store.commit("DEL_ALL_TAG");
+        console.log(this.tagWel.query);
+        this.$router.push({
+          path: resolveUrlPath(this.tagWel.value)+"?t="+Math.random()
+        }); 
+      }else{
+        this.$message({ message: '至少保留一个tab页', type: 'warning', duration: 1500, });
+      }
     },
     moveToView(tag) {
-      if (tag.offsetLeft < -this.tagBodyLeft) {
-        // 标签在可视区域左侧
-        this.tagBodyLeft = -tag.offsetLeft + 10;
-      } else if (
-        tag.offsetLeft + 10 > -this.tagBodyLeft &&
-        tag.offsetLeft + tag.offsetWidth <
-          -this.tagBodyLeft + this.$refs.tagBox.offsetWidth
-      ) {
-        // 标签在可视区域
-      } else {
-        // 标签在可视区域右侧
-        this.tagBodyLeft = -(
-          tag.offsetLeft -
-          (this.$refs.tagBox.offsetWidth - 100 - tag.offsetWidth) +
-          20
-        );
+      var marginLeftVal = 0;
+      var tagElment = tag;
+      while (tagElment) {
+        console.log(tagElment,tagElment.offsetWidth);
+        marginLeftVal += tagElment.offsetWidth;
+        tagElment = tagElment.previousSibling;
       }
+      var marginRightVal = 0;
+      tagElment = tag;
+      while (tagElment) {
+        marginRightVal += tag.offsetWidth;
+        tagElment = tagElment.nextSibling;
+      }
+      console.log(tag);
+      console.log(marginLeftVal);
+      console.log(marginRightVal);
+      var tabOuterWidth = 120;
+      var visibleWidth = this.$refs.tagBox.offsetWidth - tabOuterWidth;
+      var scrollVal = 0;
+      var nextTagWidth = 0;
+      if(tag.nextSibling){
+          nextTagWidth = tag.nextSibling.offsetWidth;
+      }
+      if (this.$refs.tagsList.offsetWidth < visibleWidth) {
+        scrollVal = 0;
+      } else if (marginRightVal <= (visibleWidth - tag.offsetWidth - nextTagWidth)) {
+        if (visibleWidth - nextTagWidth > marginRightVal) {
+          scrollVal = marginLeftVal;
+          var tabElement = tag;
+          while (tabElement && ((scrollVal - tabElement.offsetWidth) > (this.$refs.tagsList.offsetWidth - visibleWidth))) {
+            scrollVal -= tabElement.previousSibling.offsetWidth;
+            tabElement = tabElement.previousSibling;
+          }
+        }
+      } else if ( marginLeftVal > visibleWidth - tag.offsetWidth - nextTagWidth) {
+        scrollVal = marginLeftVal - tag.offsetWidth;
+      }
+      this.tagBodyLeft = 40 - scrollVal;
     },
     openUrl(item) {
       this.$router.push({
@@ -255,7 +294,7 @@ export default {
   font-size: 11px !important;
 }
 
-.is-active {
+.is-active > span.iconfont {
   color: #4e97d9;
 }
 .tag-item {

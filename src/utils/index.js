@@ -95,6 +95,27 @@ export const setUrlPath = ($route) => {
 }
 
 /**
+ * esc监听全屏
+ */
+export const listenfullscreen = (callback) => {
+  function listen() {
+      callback()
+  }
+  document.addEventListener("fullscreenchange", function (e) {
+      listen();
+  });
+  document.addEventListener("mozfullscreenchange", function (e) {
+      listen();
+  });
+  document.addEventListener("webkitfullscreenchange", function (e) {
+      listen();
+  });
+  document.addEventListener("msfullscreenchange", function (e) {
+      listen();
+  });
+}
+
+/**
  * 浏览器判断是否全屏
  */
 export const fullscreenToggel = () => {

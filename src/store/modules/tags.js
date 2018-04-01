@@ -33,8 +33,8 @@ const navs = {
     },
     mutations: {
         ADD_TAG: (state, action) => {
+            console.log("====================>ADD_TAG");
             state.tag = action;
-            console.log('==========',action)
             setStore({ name: 'tag', content: state.tag })
             if (state.tagList.some(a => a.value === action.value)) return
             state.tagList.push({
@@ -46,10 +46,12 @@ const navs = {
             setStore({ name: 'tagList', content: state.tagList })
         },
         SET_TAG_CURRENT: (state, tagCurrent) => {
+            console.log("====================>SET_TAG_CURRENT");
             state.tagCurrent = tagCurrent;
             setStore({ name: 'tagCurrent', content: state.tagCurrent })
         },
         SET_TAG: (state, value) => {
+            console.log("====================>SET_TAG");
             state.tagList.forEach((ele, num) => {
                 if (ele.value === value) {
                     state.tag = state.tagList[num];
@@ -58,12 +60,17 @@ const navs = {
             });
         },
         DEL_ALL_TAG: (state, action) => {
-            state.tag = tagObj;
-            state.tagList = [];
-            removeStore({ name: 'tag' });
-            removeStore({ name: 'tagList' });
+            console.log("====================>DEL_ALL_TAG");
+            console.log(state.tagList);
+            if(state.tagList.length>1){
+                state.tag = tagObj;
+                state.tagList = [];
+                removeStore({ name: 'tag' });
+                removeStore({ name: 'tagList' });
+            }
         },
         DEL_TAG_OTHER: (state, action) => {
+            console.log("====================>DEL_TAG_OTHER");
             state.tagList.forEach((ele, num) => {
                 if (ele.value === state.tag.value) {
                     state.tagList = state.tagList.slice(num, num + 1)
@@ -73,9 +80,9 @@ const navs = {
                     setStore({ name: 'tagList', content: state.tagList })
                 }
             })
-
         },
         DEL_TAG: (state, action) => {
+            console.log("====================>DEL_TAG");
             state.tagList.forEach((ele, num) => {
                 if (ele.value === action.value) {
                     state.tagList.splice(num, 1)

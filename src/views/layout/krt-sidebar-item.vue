@@ -25,7 +25,7 @@
 import { resolveUrlPath } from "@/utils";
 import { mapState,mapMutations,mapGetters } from 'vuex';
 export default {
-  name: "SidebarItem",
+  name: "krtSidebarItem",
   data() {
     return {};
   },

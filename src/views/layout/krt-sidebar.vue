@@ -1,5 +1,5 @@
 <template>
-  <aside class="asidebar" :style="{height: this.documentClientHeight - 60 + 'px'}">
+  <aside class="asidebar" :style="{height: this.documentClientHeight - 50 + 'px'}">
         <el-menu
             :collapse="isCollapse"
             background-color="#20222A"
@@ -65,6 +65,7 @@ export default {
   left: 0;
   bottom: 0;
   height: 100%;
+  overflow-x: hidden;
   overflow-y: auto;
 }
 .el-menu {
